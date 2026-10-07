@@ -17,6 +17,7 @@
 - Fix a scan crash when a filesystem-synchronized Xcode source folder starts with `**`.
 - Fix hand-quoted `build_arguments` values, such as `OTHER_SWIFT_FLAGS='$(inherited) -no-warnings-as-errors'`, being re-quoted when they follow a boolean flag.
 - Retain result builder `buildPartialBlock(first:)` and `buildPartialBlock(accumulated:next:)` methods.
+- Fix SwiftUI `@State` analysis with Xcode 27, recognizing projected-value and backing-storage reads and reporting initializer helpers used only by unused state.
 
 ## 3.8.0 (2026-07-25)
 

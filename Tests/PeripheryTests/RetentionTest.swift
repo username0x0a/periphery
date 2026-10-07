@@ -936,6 +936,23 @@ final class RetentionTest: FixtureSourceGraphTestCase {
         }
     }
 
+    #if os(macOS) && compiler(>=6.4)
+        // SwiftUI's @State is a macro since Xcode 27.
+        func testSwiftUIStateMacro() {
+            analyze(retainPublic: true) {
+                assertReferenced(.struct("FixtureSwiftUIStateView")) {
+                    self.assertReferenced(.varInstance("readState"))
+                    self.assertReferenced(.varInstance("projectedValueReadState"))
+                    self.assertReferenced(.varInstance("backingStorageReadState"))
+                    self.assertNotReferenced(.varInstance("backingStorageAssignedState"))
+                    self.assertNotReferenced(.varInstance("unusedState"))
+                }
+                assertReferenced(.functionFree("fixtureStateInitialValue1()"))
+                assertNotReferenced(.functionFree("fixtureStateInitialValue2()"))
+            }
+        }
+    #endif
+
     func testRetainsCallAsFunction() {
         analyze(retainPublic: true) {
             assertReferenced(.struct("FixtureStruct1")) {

@@ -87,6 +87,7 @@ swift_library(
         "SourceGraph/Mutators/StructImplicitInitializerReferenceBuilder.swift",
         "SourceGraph/Mutators/SwiftTestingRetainer.swift",
         "SourceGraph/Mutators/SwiftUIRetainer.swift",
+        "SourceGraph/Mutators/SwiftUIStateMacroReferenceBuilder.swift",
         "SourceGraph/Mutators/UnusedImportMarker.swift",
         "SourceGraph/Mutators/UnusedParameterRetainer.swift",
         "SourceGraph/Mutators/UsedDeclarationMarker.swift",
