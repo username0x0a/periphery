@@ -1,5 +1,5 @@
 {
-    "homepage": "https://github.com/peripheryapp/periphery",
+    "homepage": "https://github.com/username0x0a/periphery",
     "maintainers": [
         {
             "email": "ian@leitch.io",
@@ -9,7 +9,7 @@
         }
     ],
     "repository": [
-        "github:peripheryapp/periphery"
+        "github:username0x0a/periphery"
     ],
     "versions": [],
     "yanked_versions": {}

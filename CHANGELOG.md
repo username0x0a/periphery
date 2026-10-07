@@ -308,14 +308,14 @@
 
 ##### Breaking
 
-**3.0 is a major breaking change and requires some manual migration, please see the [3.0 Migration Guide](https://github.com/peripheryapp/periphery/wiki/3.0-Migration-Guide).**
+**3.0 is a major breaking change and requires some manual migration, please see the [3.0 Migration Guide](https://github.com/username0x0a/periphery/wiki/3.0-Migration-Guide).**
 
 - Support for installing via CocoaPods has been removed.
 - Removed support for Swift 5.9/Xcode 15.2.
-- Periphery is now available directly from Homebrew, and the `peripheryapp/periphery` tap is no longer updated. To migrate run the following:
+- Periphery is now available directly from Homebrew, and the `username0x0a/periphery` tap is no longer updated. To migrate run the following:
 ```
 brew remove periphery
-brew untap peripheryapp/periphery
+brew untap username0x0a/periphery
 brew update
 brew install periphery
 ```
@@ -1270,19 +1270,19 @@ brew install periphery
 
 - New `strict` option to exit with non-zero status if any unused code is found.
   [Cihat Gündüz](https://github.com/Dschee)
-  [#22](https://github.com/peripheryapp/periphery/issues/22)
-  [#23](https://github.com/peripheryapp/periphery/pull/23)
+  [#22](https://github.com/username0x0a/periphery/issues/22)
+  [#23](https://github.com/username0x0a/periphery/pull/23)
 
 - Add official Homebrew support.
   [Ian Leitch](https://github.com/ileitch)
-  [#24](https://github.com/peripheryapp/periphery/pull/24)
+  [#24](https://github.com/username0x0a/periphery/pull/24)
 
 ##### Bug Fixes
 
 - Fix parsing of projects using Siri message intents.
   [Ian Leitch](https://github.com/ileitch)
-  [#25](https://github.com/peripheryapp/periphery/issues/25)
-  [#26](https://github.com/peripheryapp/periphery/pull/26)
+  [#25](https://github.com/username0x0a/periphery/issues/25)
+  [#26](https://github.com/username0x0a/periphery/pull/26)
 
 ## 1.3.0 (2019-02-10)
 

@@ -23,8 +23,8 @@
 <p align="center"><q><i>Now I am become Delete, the destroyer of codes.</i></q></p>
 
 <p align="center">
-<a href="https://github.com/peripheryapp/periphery/releases/latest">
-<img src="https://img.shields.io/github/release/peripheryapp/periphery.svg?color=008DFF"/></a>
+<a href="https://github.com/username0x0a/periphery/releases/latest">
+<img src="https://img.shields.io/github/release/username0x0a/periphery.svg?color=008DFF"/></a>
 <img src="https://img.shields.io/badge/platform-macOS%20|%20Linux-008DFF">
 <a href="#sponsors-">
 <img src="https://img.shields.io/github/sponsors/peripheryapp?logo=githubsponsors&color=db61a2">
@@ -71,7 +71,7 @@ brew install periphery
 ### [Mint](https://github.com/yonaskolb/mint)
 
 ```sh
-mint install peripheryapp/periphery
+mint install username0x0a/periphery
 ```
 
 ### [Bazel](https://bazel.build/)
@@ -478,7 +478,7 @@ By default, Periphery looks for the index store at `.build/debug/index/store`, o
 bazel run @periphery -- scan --bazel
 ```
 
-The `--bazel` option enables Bazel mode, which provides seamless integration with your project. It works by querying your project to identify all top-level targets, generating a hidden implementation of the [scan](https://github.com/peripheryapp/periphery/blob/master/bazel/rules.bzl) rule, and then invoking `bazel run`. You can filter the default top-level target query with the `--bazel-filter <value>` option, where `<value>` will be passed as the first argument to Bazel's [filter](https://bazel.build/query/language#filter) operator. You can also override the generated query entirely with `--bazel-query <value>`, which is useful when you need to exclude targets such as ones tagged `manual`, or avoid building targets that use an incorrect transition when built directly. The generated query can be seen in the console with the `--verbose` option.
+The `--bazel` option enables Bazel mode, which provides seamless integration with your project. It works by querying your project to identify all top-level targets, generating a hidden implementation of the [scan](https://github.com/username0x0a/periphery/blob/master/bazel/rules.bzl) rule, and then invoking `bazel run`. You can filter the default top-level target query with the `--bazel-filter <value>` option, where `<value>` will be passed as the first argument to Bazel's [filter](https://bazel.build/query/language#filter) operator. You can also override the generated query entirely with `--bazel-query <value>`, which is useful when you need to exclude targets such as ones tagged `manual`, or avoid building targets that use an incorrect transition when built directly. The generated query can be seen in the console with the `--verbose` option.
 
 Periphery's generated scan rule follows embedded bundle and plugin edges transitively, so you can root the scan in application targets while still analyzing code that is only reachable through extensions, app clips, watch applications, or Swift compiler plugins.
 
@@ -598,9 +598,9 @@ Special thanks go to the following generous sponsors:
 
 <a href="https://www.sagacorp.fr" alt="SaGa Corp">
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://github.com/peripheryapp/periphery/raw/master/assets/sponsors/saga-corp-white.svg">
-        <source media="(prefers-color-scheme: light)" srcset="https://github.com/peripheryapp/periphery/raw/master/assets/sponsors/saga-corp-black.svg">
-        <img src="https://github.com/peripheryapp/periphery/raw/master/assets/sponsors/saga-corp-black.svg" width="150">
+        <source media="(prefers-color-scheme: dark)" srcset="https://github.com/username0x0a/periphery/raw/master/assets/sponsors/saga-corp-white.svg">
+        <source media="(prefers-color-scheme: light)" srcset="https://github.com/username0x0a/periphery/raw/master/assets/sponsors/saga-corp-black.svg">
+        <img src="https://github.com/username0x0a/periphery/raw/master/assets/sponsors/saga-corp-black.svg" width="150">
     </picture>
 </a>
 
@@ -610,9 +610,9 @@ Special thanks go to the following generous sponsors:
 
 <a href="https://www.emergetools.com" alt="Emerge Tools">
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://github.com/peripheryapp/periphery/raw/master/assets/sponsors/emerge-tools-vertical-white.svg">
-        <source media="(prefers-color-scheme: light)" srcset="https://github.com/peripheryapp/periphery/raw/master/assets/sponsors/emerge-tools-vertical-black.svg">
-        <img src="https://github.com/peripheryapp/periphery/raw/master/assets/sponsors/emerge-tools-vertical-black.svg">
+        <source media="(prefers-color-scheme: dark)" srcset="https://github.com/username0x0a/periphery/raw/master/assets/sponsors/emerge-tools-vertical-white.svg">
+        <source media="(prefers-color-scheme: light)" srcset="https://github.com/username0x0a/periphery/raw/master/assets/sponsors/emerge-tools-vertical-black.svg">
+        <img src="https://github.com/username0x0a/periphery/raw/master/assets/sponsors/emerge-tools-vertical-black.svg">
     </picture>
 </a>
 

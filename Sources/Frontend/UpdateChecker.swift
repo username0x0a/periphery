@@ -8,6 +8,8 @@ import Shared
 #endif
 
 final class UpdateChecker {
+    private static let repository = "username0x0a/periphery"
+
     private let logger: Logger
     private let debugLogger: ContextualLogger
     private let configuration: Configuration
@@ -23,7 +25,7 @@ final class UpdateChecker {
         self.configuration = configuration
         let config = URLSessionConfiguration.ephemeral
         urlSession = URLSession(configuration: config)
-        latestReleaseURL = URL(string: "https://api.github.com/repos/peripheryapp/periphery/releases/latest")!
+        latestReleaseURL = URL(string: "https://api.github.com/repos/\(Self.repository)/releases/latest")!
         semaphore = DispatchSemaphore(value: 0)
     }
 
@@ -85,7 +87,7 @@ final class UpdateChecker {
         let boldLatestVersion = logger.colorize(latestVersion, .bold)
         let boldLocalVersion = logger.colorize(PeripheryVersion, .bold)
         logger.info("Version \(boldLatestVersion) is now available, you are using version \(boldLocalVersion).")
-        logger.info("Release notes: " + logger.colorize("https://github.com/peripheryapp/periphery/releases/tag/\(latestVersion)", .bold))
+        logger.info("Release notes: " + logger.colorize("https://github.com/\(Self.repository)/releases/tag/\(latestVersion)", .bold))
         let boldOption = logger.colorize("--disable-update-check", .bold)
         let boldScan = logger.colorize("scan", .bold)
         logger.info("To disable update checks pass the \(boldOption) option to the \(boldScan) command.")

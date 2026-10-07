@@ -1122,7 +1122,7 @@ final class RetentionTest: FixtureSourceGraphTestCase {
     }
 
     // https://github.com/apple/swift/issues/64686
-    // https://github.com/peripheryapp/periphery/issues/264
+    // https://github.com/username0x0a/periphery/issues/264
     func testSelfReferencedConstructor() {
         analyze(retainPublic: true) {
             assertReferenced(.struct("FixtureStruct3")) {
