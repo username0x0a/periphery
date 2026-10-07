@@ -16,6 +16,7 @@
 - Fix false positive redundant public accessibility warnings for result builders used by public function and initializer parameters.
 - Fix a scan crash when a filesystem-synchronized Xcode source folder starts with `**`.
 - Fix hand-quoted `build_arguments` values, such as `OTHER_SWIFT_FLAGS='$(inherited) -no-warnings-as-errors'`, being re-quoted when they follow a boolean flag.
+- Retain result builder `buildPartialBlock(first:)` and `buildPartialBlock(accumulated:next:)` methods.
 
 ## 3.8.0 (2026-07-25)
 
