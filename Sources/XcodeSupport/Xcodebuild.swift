@@ -134,20 +134,38 @@ public final class Xcodebuild {
         return try Constants.cachePath().appending("DerivedData-\(xcodeVersionHash)-\(projectHash)-\(schemesHash)")
     }
 
-    private func quote(arguments: [String]) -> [String] {
+    func quote(arguments: [String]) -> [String] {
         var quotedArguments = arguments
 
         for (i, arg) in arguments.enumerated() {
             if arg.hasPrefix("-"),
                let value = arguments[safe: i + 1],
                !value.hasPrefix("-"),
-               !value.hasPrefix("\""),
-               !value.hasPrefix("\'")
+               !isQuoted(value)
             {
                 quotedArguments[i + 1] = "\"\(value)\""
             }
         }
 
         return quotedArguments
+    }
+
+    /// Whether the value is already quoted, either entirely, or as a build setting with a quoted value, e.g.
+    /// `OTHER_SWIFT_FLAGS='$(inherited) -no-warnings-as-errors'`.
+    private func isQuoted(_ value: String) -> Bool {
+        let quotes: Set<Character> = ["\"", "\'"]
+
+        if let first = value.first, quotes.contains(first) {
+            return true
+        }
+
+        if let equalsIndex = value.firstIndex(of: "="),
+           let settingValueFirst = value[value.index(after: equalsIndex)...].first,
+           quotes.contains(settingValueFirst)
+        {
+            return true
+        }
+
+        return false
     }
 }
