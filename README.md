@@ -64,24 +64,23 @@
 
 ### [Homebrew](https://brew.sh/)
 
+Prebuilt binaries for Apple silicon Macs are available from the [username0x0a/tap](https://github.com/username0x0a/homebrew-tap) tap:
+
 ```sh
-brew install periphery
+brew install username0x0a/tap/periphery
 ```
+
+Homebrew's core repository also provides a `periphery` formula, so use the fully qualified `username0x0a/tap/periphery` name. Periphery requires Xcode or the Command Line Tools to be installed.
+
+### Prebuilt Binary
+
+Notarized binaries for Apple silicon Macs are attached to each [release](https://github.com/username0x0a/periphery/releases/latest). Periphery requires Xcode or the Command Line Tools to be installed.
 
 ### [Mint](https://github.com/yonaskolb/mint)
 
 ```sh
 mint install username0x0a/periphery
 ```
-
-### [Bazel](https://bazel.build/)
-
-```python
-bazel_dep(name = "periphery", version = "<version>", dev_dependency = True)
-use_repo(use_extension("@periphery//bazel:generated.bzl", "generated"), "periphery_generated")
-```
-
-See [Bazel](#build-systems) below for usage instructions.
 
 ## How To Use
 
