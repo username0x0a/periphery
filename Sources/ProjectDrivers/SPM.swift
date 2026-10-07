@@ -28,7 +28,34 @@ public enum SPM {
         }
 
         public func build(additionalArguments: [String]) throws {
-            try shell.exec(["swift", "build", "--build-tests"] + additionalArguments)
+            // The swiftbuild build system (default since Swift 6.4) only writes the index store to the products
+            // directory when indexing is explicitly enabled.
+            let indexStoreFlags = ["--auto-index-store", "--enable-index-store", "--disable-index-store"]
+            let indexStoreArguments = additionalArguments.contains(where: indexStoreFlags.contains)
+                ? []
+                : ["--enable-index-store"]
+            try shell.exec(["swift", "build", "--build-tests"] + indexStoreArguments + additionalArguments)
+        }
+
+        /// The index store path for a debug build.
+        ///
+        /// The native build system, and the swiftbuild build system with indexing explicitly enabled, write the
+        /// index store to `.build/debug/index/store`. When indexing is left in automatic mode (e.g. `swift build`
+        /// or `swift test` without arguments), swiftbuild instead writes it to `.build/out`. If both exist, the most
+        /// recently updated one is used.
+        public var indexStorePath: FilePath {
+            let productsStorePath = path.appending(".build/debug/index/store")
+            let swiftBuildStorePath = path.appending(".build/out")
+            let candidates = [productsStorePath, swiftBuildStorePath]
+                .compactMap { storePath -> (FilePath, Date)? in
+                    let unitsPath = storePath.appending("v5/units")
+                    guard unitsPath.exists else { return nil }
+
+                    let attributes = try? FileManager.default.attributesOfItem(atPath: unitsPath.string)
+                    return (storePath, attributes?[.modificationDate] as? Date ?? .distantPast)
+                }
+
+            return candidates.max { $0.1 < $1.1 }?.0 ?? productsStorePath
         }
 
         public func load() throws -> PackageDescription {
