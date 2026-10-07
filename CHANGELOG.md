@@ -14,6 +14,7 @@
 - Fix unstable DerivedData path generation.
 - Fix `--retain-public`, `retain_public: true`, and `// periphery:ignore` not retaining public macro declarations.
 - Fix false positive redundant public accessibility warnings for result builders used by public function and initializer parameters.
+- Fix a scan crash when a filesystem-synchronized Xcode source folder starts with `**`.
 
 ## 3.8.0 (2026-07-25)
 

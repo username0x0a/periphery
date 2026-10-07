@@ -26,8 +26,7 @@ public final class XcodeTarget {
         let sourceRoot = project.sourceRoot.lexicallyNormalized()
         let rootFileSystemFiles = try project.xcodeProject.pbxproj.fileSystemSynchronizedRootGroups.flatMapSet {
             if let stringPath = try $0.fullPath(sourceRoot: sourceRoot.string) {
-                let path = FilePath(stringPath)
-                return FilePath.glob(path.appending("**/*").string)
+                return contentsOfDirectory(at: FilePath(stringPath))
             }
 
             return []
@@ -79,6 +78,28 @@ public final class XcodeTarget {
                 }
             }
         }
+    }
+
+    /// Recursively lists all files and directories within the given directory. The path is not interpreted as a glob
+    /// pattern, as directory names may contain glob special characters, such as `**`.
+    private func contentsOfDirectory(at path: FilePath) -> Set<FilePath> {
+        guard let enumerator = FileManager.default.enumerator(atPath: path.string) else { return [] }
+
+        var paths: Set<FilePath> = []
+
+        while let subpath = enumerator.nextObject() as? String {
+            let subpath = FilePath(subpath)
+
+            // Skip hidden files and directories.
+            if subpath.lastComponent?.string.hasPrefix(".") ?? false {
+                enumerator.skipDescendants()
+                continue
+            }
+
+            paths.insert(path.appending(subpath.components).lexicallyNormalized())
+        }
+
+        return paths
     }
 
     private func identifyInfoPlistFiles() throws {
