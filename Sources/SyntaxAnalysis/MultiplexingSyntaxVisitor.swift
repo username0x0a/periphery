@@ -24,6 +24,7 @@ public protocol PeripherySyntaxVisitor {
     func visit(_ node: AssociatedTypeDeclSyntax)
     func visit(_ node: OperatorDeclSyntax)
     func visit(_ node: PrecedenceGroupDeclSyntax)
+    func visit(_ node: MacroDeclSyntax)
     func visit(_ node: ImportDeclSyntax)
     func visit(_ node: OptionalBindingConditionSyntax)
     func visit(_ node: FunctionCallExprSyntax)
@@ -44,6 +45,7 @@ public protocol PeripherySyntaxVisitor {
     func visitPost(_ node: AssociatedTypeDeclSyntax)
     func visitPost(_ node: OperatorDeclSyntax)
     func visitPost(_ node: PrecedenceGroupDeclSyntax)
+    func visitPost(_ node: MacroDeclSyntax)
     func visitPost(_ node: ImportDeclSyntax)
     func visitPost(_ node: OptionalBindingConditionSyntax)
     func visitPost(_ node: FunctionCallExprSyntax)
@@ -66,6 +68,7 @@ public extension PeripherySyntaxVisitor {
     func visit(_: AssociatedTypeDeclSyntax) {}
     func visit(_: OperatorDeclSyntax) {}
     func visit(_: PrecedenceGroupDeclSyntax) {}
+    func visit(_: MacroDeclSyntax) {}
     func visit(_: ImportDeclSyntax) {}
     func visit(_: OptionalBindingConditionSyntax) {}
     func visit(_: FunctionCallExprSyntax) {}
@@ -86,6 +89,7 @@ public extension PeripherySyntaxVisitor {
     func visitPost(_: AssociatedTypeDeclSyntax) {}
     func visitPost(_: OperatorDeclSyntax) {}
     func visitPost(_: PrecedenceGroupDeclSyntax) {}
+    func visitPost(_: MacroDeclSyntax) {}
     func visitPost(_: ImportDeclSyntax) {}
     func visitPost(_: OptionalBindingConditionSyntax) {}
     func visitPost(_: FunctionCallExprSyntax) {}
@@ -204,6 +208,11 @@ public final class MultiplexingSyntaxVisitor: SyntaxVisitor {
         return .visitChildren
     }
 
+    override public func visit(_ node: MacroDeclSyntax) -> SyntaxVisitorContinueKind {
+        visitors.forEach { $0.visit(node) }
+        return .visitChildren
+    }
+
     override public func visit(_ node: ImportDeclSyntax) -> SyntaxVisitorContinueKind {
         visitors.forEach { $0.visit(node) }
         return .visitChildren
@@ -280,6 +289,10 @@ public final class MultiplexingSyntaxVisitor: SyntaxVisitor {
     }
 
     override public func visitPost(_ node: PrecedenceGroupDeclSyntax) {
+        visitors.forEach { $0.visitPost(node) }
+    }
+
+    override public func visitPost(_ node: MacroDeclSyntax) {
         visitors.forEach { $0.visitPost(node) }
     }
 

@@ -365,6 +365,20 @@ final class RetentionTest: FixtureSourceGraphTestCase {
         }
     }
 
+    func testRetainsPublicMacro() {
+        analyze(retainPublic: true) {
+            assertReferenced(.macro("fixtureMacro1()"))
+            assertNotReferenced(.macro("fixtureMacro2()"))
+        }
+    }
+
+    func testIgnoreCommentOnMacro() {
+        analyze {
+            assertReferenced(.macro("fixtureMacro3()"))
+            assertNotReferenced(.macro("fixtureMacro4()"))
+        }
+    }
+
     func testRetainsDestructor() {
         analyze(retainPublic: true) {
             assertReferenced(.class("FixtureClass40")) {

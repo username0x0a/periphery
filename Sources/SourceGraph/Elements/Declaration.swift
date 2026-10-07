@@ -92,6 +92,7 @@ public final class Declaration {
             .extensionStruct,
             .extensionProtocol,
             .varGlobal,
+            .macro,
         ]
 
         static var extensionKinds: Set<Kind> {

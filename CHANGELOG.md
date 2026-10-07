@@ -12,6 +12,7 @@
 
 - Fix indexing implicitly discovered Interface Builder and Core Data resources in Swift packages.
 - Fix unstable DerivedData path generation.
+- Fix `--retain-public`, `retain_public: true`, and `// periphery:ignore` not retaining public macro declarations.
 
 ## 3.8.0 (2026-07-25)
 

@@ -296,6 +296,17 @@ public final class DeclarationSyntaxVisitor: PeripherySyntaxVisitor {
         )
     }
 
+    public func visitPost(_ node: MacroDeclSyntax) {
+        parse(
+            modifiers: node.modifiers,
+            attributes: node.attributes,
+            trivia: node.commentCommandTrivia,
+            genericParameterClause: node.genericParameterClause,
+            genericWhereClause: node.genericWhereClause,
+            at: node.name.positionAfterSkippingLeadingTrivia
+        )
+    }
+
     // MARK: - Private
 
     private func parse(
