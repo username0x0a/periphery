@@ -21,6 +21,7 @@
 - Fix superfluous ignore warnings for members that inherit an ignore from their parent declaration.
 - Fix JSON, CodeClimate and GitLab Code Quality output varying in key and attribute order between runs.
 - Fix nondeterministic results when declarations in the same file share an Objective-C name, such as classes with the same `@objc(...)` name, their extensions, or async and completion-handler forms of the same `@objc` protocol requirement.
+- Fix declarations being retained solely by requirements on otherwise-unused constrained extensions that do not add a protocol conformance.
 
 ## 3.8.0 (2026-07-25)
 

@@ -64,6 +64,7 @@ swift_library(
         "SourceGraph/Mutators/CodablePropertyRetainer.swift",
         "SourceGraph/Mutators/CodingKeyEnumReferenceBuilder.swift",
         "SourceGraph/Mutators/ComplexPropertyAccessorReferenceBuilder.swift",
+        "SourceGraph/Mutators/ConstrainedExtensionReferenceBuilder.swift",
         "SourceGraph/Mutators/DefaultConstructorReferenceBuilder.swift",
         "SourceGraph/Mutators/DynamicMemberRetainer.swift",
         "SourceGraph/Mutators/EntryPointAttributeRetainer.swift",

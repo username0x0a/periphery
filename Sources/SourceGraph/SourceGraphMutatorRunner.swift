@@ -14,6 +14,9 @@ public final class SourceGraphMutatorRunner {
         // Must come before ExtensionReferenceBuilder so that it can detect redundant accessibility on extensions.
         RedundantExplicitPublicAccessibilityMarker.self,
         GenericClassAndStructConstructorReferenceBuilder.self,
+        // Must come after RedundantExplicitPublicAccessibilityMarker as it inspects extension generic requirements,
+        // and before ExtensionReferenceBuilder.
+        ConstrainedExtensionReferenceBuilder.self,
         // Must come before ProtocolExtensionReferenceBuilder because it removes references
         // from the extension to the protocol, thus making them appear to be unknown.
         ExtensionReferenceBuilder.self,

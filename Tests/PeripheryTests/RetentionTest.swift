@@ -953,6 +953,15 @@ final class RetentionTest: FixtureSourceGraphTestCase {
         }
     #endif
 
+    func testConstrainedExtensionRequirementTypes() {
+        analyze(retainPublic: true) {
+            assertNotReferenced(.protocol("ConstrainedExtensionProtocol0"))
+            assertNotReferenced(.struct("ConstrainedExtensionStruct0"))
+            assertReferenced(.protocol("ConstrainedExtensionProtocol1"))
+            assertReferenced(.protocol("ConstrainedExtensionProtocol2"))
+        }
+    }
+
     func testRetainsCallAsFunction() {
         analyze(retainPublic: true) {
             assertReferenced(.struct("FixtureStruct1")) {
