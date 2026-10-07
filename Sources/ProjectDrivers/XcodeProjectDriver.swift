@@ -102,7 +102,7 @@
                 try xcodebuild.removeDerivedData(for: project, allSchemes: Array(schemes))
             }
 
-            for scheme in schemes {
+            for scheme in schemes.sorted() {
                 if configuration.outputFormat.supportsAuxiliaryOutput {
                     let asterisk = logger.colorize("*", .boldGreen)
                     logger.info("\(asterisk) Building \(scheme)...")

@@ -11,6 +11,7 @@
 ##### Bug Fixes
 
 - Fix indexing implicitly discovered Interface Builder and Core Data resources in Swift packages.
+- Fix unstable DerivedData path generation.
 
 ## 3.8.0 (2026-07-25)
 

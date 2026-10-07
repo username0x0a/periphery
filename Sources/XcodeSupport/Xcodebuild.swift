@@ -119,15 +119,17 @@ public final class Xcodebuild {
         }
     }
 
-    private func derivedDataPath(for project: XcodeProjectlike, schemes: [String]) throws -> FilePath {
+    func derivedDataPath(for project: XcodeProjectlike, schemes: [String]) throws -> FilePath {
         // Given a project with two schemes: A and B, a scenario can arise where the index store contains conflicting
         // data. If scheme A is built, then the source file modified and then scheme B built, the index store will
         // contain two records for that source file. One reflects the state of the file when scheme A was built, and the
         // other when B was built. We must therefore key the DerivedData path with the full list of schemes being built.
+        // The schemes are sorted, as their order is not guaranteed to be stable between runs, and joined with a
+        // separator so that distinct lists of schemes do not produce the same key.
 
         let xcodeVersionHash = try version().djb2Hex
         let projectHash = project.name.djb2Hex
-        let schemesHash = Array(schemes).joined().djb2Hex
+        let schemesHash = Set(schemes).sorted().joined(separator: "\n").djb2Hex
 
         return try Constants.cachePath().appending("DerivedData-\(xcodeVersionHash)-\(projectHash)-\(schemesHash)")
     }
