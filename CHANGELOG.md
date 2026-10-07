@@ -20,6 +20,7 @@
 - Fix SwiftUI `@State` analysis with Xcode 27, recognizing projected-value and backing-storage reads and reporting initializer helpers used only by unused state.
 - Fix superfluous ignore warnings for members that inherit an ignore from their parent declaration.
 - Fix JSON, CodeClimate and GitLab Code Quality output varying in key and attribute order between runs.
+- Fix nondeterministic results when declarations in the same file share an Objective-C name, such as classes with the same `@objc(...)` name, their extensions, or async and completion-handler forms of the same `@objc` protocol requirement.
 
 ## 3.8.0 (2026-07-25)
 

@@ -14,6 +14,48 @@ import XCTest
             }
         }
 
+        func testDeclarationsSharingObjcNameAreDeterministic() {
+            // Only the first of the declarations sharing a USR in the same file is indexed.
+            analyze(retainObjcAccessible: true) {
+                assertReferenced(.class("FixtureSharedObjcNameFirst1"))
+                assertNotIndexed(.class("FixtureSharedObjcNameSecond1"))
+                assertReferenced(.protocol("FixtureSharedObjcNameProtocol1")) {
+                    self.assertReferenced(.functionMethodInstance("fetch1(completionHandler:)"))
+                    self.assertNotIndexed(.functionMethodInstance("fetch1()"))
+                }
+                assertReferenced(.class("FixtureSharedObjcNameFirst2"))
+                assertNotIndexed(.class("FixtureSharedObjcNameSecond2"))
+                assertReferenced(.protocol("FixtureSharedObjcNameProtocol2")) {
+                    self.assertReferenced(.functionMethodInstance("fetch2(completionHandler:)"))
+                    self.assertNotIndexed(.functionMethodInstance("fetch2()"))
+                }
+                assertReferenced(.class("FixtureSharedObjcNameFirst3"))
+                assertNotIndexed(.class("FixtureSharedObjcNameSecond3"))
+                assertReferenced(.protocol("FixtureSharedObjcNameProtocol3")) {
+                    self.assertReferenced(.functionMethodInstance("fetch3(completionHandler:)"))
+                    self.assertNotIndexed(.functionMethodInstance("fetch3()"))
+                }
+                assertReferenced(.class("FixtureSharedObjcNameFirst4"))
+                assertNotIndexed(.class("FixtureSharedObjcNameSecond4"))
+                assertReferenced(.protocol("FixtureSharedObjcNameProtocol4")) {
+                    self.assertReferenced(.functionMethodInstance("fetch4(completionHandler:)"))
+                    self.assertNotIndexed(.functionMethodInstance("fetch4()"))
+                }
+                assertReferenced(.class("FixtureSharedObjcNameFirst5"))
+                assertNotIndexed(.class("FixtureSharedObjcNameSecond5"))
+                assertReferenced(.protocol("FixtureSharedObjcNameProtocol5")) {
+                    self.assertReferenced(.functionMethodInstance("fetch5(completionHandler:)"))
+                    self.assertNotIndexed(.functionMethodInstance("fetch5()"))
+                }
+                assertReferenced(.class("FixtureSharedObjcNameFirst6"))
+                assertNotIndexed(.class("FixtureSharedObjcNameSecond6"))
+                assertReferenced(.protocol("FixtureSharedObjcNameProtocol6")) {
+                    self.assertReferenced(.functionMethodInstance("fetch6(completionHandler:)"))
+                    self.assertNotIndexed(.functionMethodInstance("fetch6()"))
+                }
+            }
+        }
+
         func testRetainsOptionalProtocolMethod() {
             analyze(retainPublic: true) {
                 assertReferenced(.class("FixtureClass127")) {

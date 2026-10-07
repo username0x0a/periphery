@@ -215,9 +215,18 @@ final class SwiftIndexer: Indexer {
 
             var newDeclarations: Set<Declaration> = []
 
-            for (key, values) in rawDeclsByKey {
+            // Multiple declarations in the same file may share USRs, e.g. classes with the same Objective-C name, or
+            // the async and completion-handler forms of an Objective-C protocol requirement. Declarations are equal
+            // by USR, so only one of them can be retained, which must be chosen deterministically.
+            let sortedRawDecls = rawDeclsByKey.sorted { lhs, rhs in
+                (lhs.key.location, lhs.key.kind.rawValue, lhs.key.name) < (rhs.key.location, rhs.key.kind.rawValue, rhs.key.name)
+            }
+
+            for (key, values) in sortedRawDecls {
                 let usrs = values.mapSet { $0.0.usr }
                 let decl = Declaration(name: key.name, kind: key.kind, usrs: usrs, location: key.location)
+
+                guard !newDeclarations.contains(decl) else { continue }
 
                 decl.isImplicit = key.isImplicit
                 decl.isObjcAccessible = key.isObjcAccessible

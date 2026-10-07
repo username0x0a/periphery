@@ -153,6 +153,12 @@ open class SourceGraphTestCase: XCTestCase {
         scopeStack.removeLast()
     }
 
+    func assertNotIndexed(_ description: DeclarationDescription, file: StaticString = #file, line: UInt = #line) {
+        if let declaration = materialize(description, in: Self.allIndexedDeclarations, fail: false, file: file, line: line) {
+            XCTFail("Expected declaration to not be indexed: \(declaration)", file: file, line: line)
+        }
+    }
+
     func assertRedundantPublicAccessibility(_ description: DeclarationDescription, scopedAssertions: (() -> Void)? = nil, file: StaticString = #file, line: UInt = #line) {
         guard let declaration = materialize(description, in: Self.allIndexedDeclarations, file: file, line: line) else { return }
 
