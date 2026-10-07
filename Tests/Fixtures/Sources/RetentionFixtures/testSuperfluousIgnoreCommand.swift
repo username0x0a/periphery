@@ -76,6 +76,20 @@ public class DeeplyNestedIgnoredClass {
     }
 }
 
+// MARK: - Members inheriting an ignore from their parent
+
+// The ignore is only declared on the class, so its members must not be reported as superfluously ignored, even
+// when they are used.
+// periphery:ignore
+public class IgnoredParentWithUsedMember {
+    public func usedMember() {}
+    public func unusedMember() {}
+}
+
+public func useIgnoredParentWithUsedMember(_ value: IgnoredParentWithUsedMember) {
+    value.usedMember()
+}
+
 // MARK: - Non-superfluous ignore on assign-only property
 
 public struct AssignOnlyIgnoreStruct {

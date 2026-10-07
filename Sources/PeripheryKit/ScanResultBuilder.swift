@@ -45,9 +45,10 @@ public enum ScanResultBuilder {
         let annotatedSuperfluousIgnoreCommands: [ScanResult] = {
             guard configuration.superfluousIgnoreComments else { return [] }
 
-            // Detect superfluous ignore commands.
+            // Detect superfluous ignore commands. Only declarations with an ignore command are considered, not
+            // descendent declarations that inherit the ignore from their parent.
             let superfluousDeclarations = graph.commandIgnoredDeclarations
-                .filter { _, kind in kind == .declaration }
+                .filter { decl, kind in kind == .declaration && decl.commentCommands.contains(.ignore) }
                 .keys
                 .filter { decl in
                     hasReferencesFromNonIgnoredCode(decl, graph: graph)

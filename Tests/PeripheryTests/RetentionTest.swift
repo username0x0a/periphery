@@ -1307,6 +1307,11 @@ final class RetentionTest: FixtureSourceGraphTestCase {
             assertNotSuperfluousIgnoreCommand(.functionMethodInstance("methodB()"))
             assertNotSuperfluousIgnoreCommand(.functionMethodInstance("methodC()"))
 
+            // Members that inherit an ignore from their parent are NOT superfluous
+            assertSuperfluousIgnoreCommand(.class("IgnoredParentWithUsedMember"))
+            assertNotSuperfluousIgnoreCommand(.functionMethodInstance("usedMember()"))
+            assertNotSuperfluousIgnoreCommand(.functionMethodInstance("unusedMember()"))
+
             // Assign-only properties with ignore comments are NOT superfluous
             assertReferenced(.struct("AssignOnlyIgnoreStruct")) {
                 self.assertNotSuperfluousIgnoreCommand(.varInstance("assignOnlyIgnored"))
