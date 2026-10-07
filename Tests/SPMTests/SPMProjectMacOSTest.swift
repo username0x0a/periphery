@@ -23,5 +23,16 @@
                 self.assertNotReferenced(.varInstance("unusedMacInspectable"))
             }
         }
+
+        func testRetainsImplicitlyDiscoveredInterfaceBuilderDeclarations() {
+            assertReferenced(.class("SPMImplicitXibViewController")) {
+                self.assertReferenced(.varInstance("button"))
+                self.assertNotReferenced(.varInstance("unusedImplicitOutlet"))
+            }
+        }
+
+        func testRetainsImplicitlyDiscoveredDataModelDeclarations() {
+            assertReferenced(.class("SPMImplicitValueTransformer"))
+        }
     }
 #endif

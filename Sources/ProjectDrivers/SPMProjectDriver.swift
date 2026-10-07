@@ -4,6 +4,7 @@ import Indexer
 import IndexStore
 import Logger
 import Shared
+import SourceGraph
 import SystemPackage
 
 public final class SPMProjectDriver {
@@ -61,11 +62,13 @@ extension SPMProjectDriver: ProjectDriver {
             configuration: configuration
         )
         let sourceFiles = try collector.collect()
-        let xibPaths = interfaceBuilderFiles(from: description)
+        let resourceFiles = resourceFiles(from: description)
 
         return IndexPlan(
             sourceFiles: sourceFiles,
-            xibPaths: xibPaths
+            xibPaths: resourceFiles[.interfaceBuilder, default: []],
+            xcDataModelPaths: resourceFiles[.xcDataModel, default: []],
+            xcMappingModelPaths: resourceFiles[.xcMappingModel, default: []]
         )
     }
 
@@ -75,29 +78,64 @@ extension SPMProjectDriver: ProjectDriver {
         description.targets.filter(\.isTestTarget).mapSet(\.name)
     }
 
-    private func interfaceBuilderFiles(from description: PackageDescription) -> Set<FilePath> {
-        var xibFiles: Set<FilePath> = []
+    private static let resourceFileKinds: [ProjectFileKind] = [.interfaceBuilder, .xcDataModel, .xcMappingModel]
+
+    private func resourceFiles(from description: PackageDescription) -> [ProjectFileKind: Set<FilePath>] {
+        var files: [ProjectFileKind: Set<FilePath>] = [:]
 
         for target in description.targets {
             let targetPath = pkg.path.appending(target.path)
 
-            guard let resources = target.resources else { continue }
-
-            for resource in resources {
-                // Resource.path is always a single file path
+            // Explicitly declared resources.
+            for resource in target.resources ?? [] {
                 let resourceFilePath = FilePath(resource.path)
                 let resourcePath: FilePath = resourceFilePath.isAbsolute
                     ? resourceFilePath
                     : targetPath.appending(resource.path)
 
-                // Check if the resource path exists and is a xib/storyboard file
-                guard resourcePath.exists else { continue }
-                guard let ext = resourcePath.extension?.lowercased(), ["xib", "storyboard"].contains(ext) else { continue }
+                guard resourcePath.exists, let kind = resourceFileKind(for: resourcePath) else { continue }
 
-                xibFiles.insert(resourcePath)
+                files[kind, default: []].insert(resourcePath)
+            }
+
+            // SwiftPM implicitly processes Interface Builder and Core Data resources found within the target
+            // directory, even when they're not declared in the manifest. Such resources are not included in the
+            // package description, so they must be discovered manually.
+            for (kind, paths) in implicitResourceFiles(in: targetPath) {
+                files[kind, default: []].formUnion(paths)
             }
         }
 
-        return xibFiles
+        return files
+    }
+
+    private func implicitResourceFiles(in targetPath: FilePath) -> [ProjectFileKind: Set<FilePath>] {
+        var files: [ProjectFileKind: Set<FilePath>] = [:]
+
+        guard let enumerator = FileManager.default.enumerator(
+            at: targetPath.url,
+            includingPropertiesForKeys: nil,
+            options: [.skipsHiddenFiles]
+        ) else { return files }
+
+        for case let url as URL in enumerator {
+            let path = FilePath(url.path)
+            guard let kind = resourceFileKind(for: path) else { continue }
+
+            files[kind, default: []].insert(path)
+
+            // Data and mapping models are directory bundles, there's no need to descend into them.
+            if kind != .interfaceBuilder {
+                enumerator.skipDescendants()
+            }
+        }
+
+        return files
+    }
+
+    private func resourceFileKind(for path: FilePath) -> ProjectFileKind? {
+        guard let ext = path.extension?.lowercased() else { return nil }
+
+        return Self.resourceFileKinds.first { $0.extensions.contains(ext) }
     }
 }

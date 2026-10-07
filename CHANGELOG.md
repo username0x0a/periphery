@@ -10,7 +10,7 @@
 
 ##### Bug Fixes
 
-- None.
+- Fix indexing implicitly discovered Interface Builder and Core Data resources in Swift packages.
 
 ## 3.8.0 (2026-07-25)
 
