@@ -18,6 +18,6 @@ public struct DeclarationAttribute: Hashable, CustomStringConvertible {
 
 extension DeclarationAttribute: Comparable {
     public static func < (lhs: DeclarationAttribute, rhs: DeclarationAttribute) -> Bool {
-        lhs.name < rhs.name
+        (lhs.name, lhs.arguments ?? "") < (rhs.name, rhs.arguments ?? "")
     }
 }
