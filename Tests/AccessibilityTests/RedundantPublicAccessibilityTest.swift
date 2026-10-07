@@ -349,4 +349,11 @@ final class RedundantPublicAccessibilityTest: SPMSourceGraphTestCase {
 
         assertNotRedundantPublicAccessibility(.enum("PublicTypeUsedAsPublicFunctionThrowType"))
     }
+
+    func testPublicResultBuilderUsedByPublicParameter() {
+        index()
+
+        assertNotRedundantPublicAccessibility(.enum("PublicResultBuilderUsedByPublicFunctionParameter"))
+        assertNotRedundantPublicAccessibility(.enum("PublicResultBuilderUsedByPublicInitializerParameter"))
+    }
 }

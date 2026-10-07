@@ -85,3 +85,6 @@ takeExtensionSameTypeGenericRequirement(.defaultInstance)
 
 // Typed throws
 try? PublicTypeUsedAsPublicFunctionThrowTypeRetainer().retain()
+
+// Result builders
+PublicResultBuilderUsedByPublicParameterRetainer { "a" }.retain { "b" }

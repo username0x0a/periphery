@@ -426,6 +426,11 @@ public final class DeclarationSyntaxVisitor: PeripherySyntaxVisitor {
         return clause.parameters.reduce(into: .init()) { result, param in
             result.formUnion(typeSyntaxInspector.typeLocations(for: param.type))
 
+            // Custom parameter attributes, such as result builders, are also types.
+            for case let .attribute(attribute) in param.attributes {
+                result.formUnion(typeSyntaxInspector.typeLocations(for: attribute.attributeName))
+            }
+
             if let defaultValue = param.defaultValue?.value {
                 result.formUnion(identifierLocations(for: defaultValue))
             }
