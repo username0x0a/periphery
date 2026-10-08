@@ -1276,6 +1276,7 @@ final class RetentionTest: FixtureSourceGraphTestCase {
             assertOverrides(.class("FixtureClass136"), [
                 .location(FilePath.current.pushing("some/other/file.swift"), 12, 34),
                 .kind("banana"),
+                .name("Apple"),
             ])
             // Test absolute path override (stays absolute)
             assertOverrides(.class("FixtureClass137"), [

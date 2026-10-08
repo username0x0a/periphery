@@ -5,6 +5,7 @@ public enum CommentCommand: CustomStringConvertible, Hashable {
     public enum Override: CustomStringConvertible, Hashable {
         case location(FilePath, Int, Int)
         case kind(String)
+        case name(String)
 
         public var description: String {
             switch self {
@@ -12,6 +13,8 @@ public enum CommentCommand: CustomStringConvertible, Hashable {
                 "location=\"\(path.string):\(line):\(column)\""
             case let .kind(kind):
                 "kind=\"\(kind)\""
+            case let .name(name):
+                "name=\"\(name)\""
             }
         }
     }
@@ -66,6 +69,26 @@ public extension Sequence<CommentCommand> {
                     switch override {
                     case let .kind(kind):
                         return kind
+                    default:
+                        break
+                    }
+                }
+            default:
+                break
+            }
+        }
+
+        return nil
+    }
+
+    var nameOverride: String? {
+        for command in self {
+            switch command {
+            case let .override(overrides):
+                for override in overrides {
+                    switch override {
+                    case let .name(name):
+                        return name
                     default:
                         break
                     }

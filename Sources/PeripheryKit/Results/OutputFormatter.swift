@@ -43,7 +43,8 @@ extension OutputFormatter {
         var secondaryResults: [(Location, String)] = []
         let location = declarationLocation(from: result.declaration)
         let kindDisplayName = declarationKindDisplayName(from: result.declaration)
-        let name = colored ? logger.colorize(result.declaration.name, .lightBlue) : result.declaration.name
+        let declarationName = declarationName(from: result.declaration)
+        let name = colored ? logger.colorize(declarationName, .lightBlue) : declarationName
 
         switch result.annotation {
         case .unused:
@@ -98,6 +99,10 @@ extension OutputFormatter {
         }
 
         return kind
+    }
+
+    func declarationName(from declaration: Declaration) -> String {
+        declaration.commentCommands.nameOverride ?? declaration.name
     }
 
     func declarationKindDisplayName(from declaration: Declaration) -> String {

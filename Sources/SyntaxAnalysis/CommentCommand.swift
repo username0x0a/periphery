@@ -63,6 +63,8 @@ extension CommentCommand {
                     overrides.append(.location(filePath, line, column))
                 case "kind":
                     overrides.append(.kind(value))
+                case "name":
+                    overrides.append(.name(value))
                 default:
                     break
                 }

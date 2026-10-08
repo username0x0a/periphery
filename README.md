@@ -381,16 +381,16 @@ Comment commands also support trailing comments following a hyphen so that you c
 class MyClass {}
 ```
 
-### Overriding Result Kind and Location
+### Overriding Result Name, Kind and Location
 
-In generated code scenarios where the generated code is too low-level or obtuse to be directly reported as unused, you can override the `kind` and/or `location` of a result to provide a more meaningful report:
+In generated code scenarios where the generated code is too low-level or obtuse to be directly reported as unused, you can override the `name`, `kind` and/or `location` of a result to provide a more meaningful report:
 
 ```swift
-// periphery:override kind="MyCustomThing" location="path/to/file.swift:42:1"
+// periphery:override name="MyThing" kind="MyCustomThing" location="path/to/file.swift:42:1"
 func generatedFunction() {}
 ```
 
-The `kind` override allows you to specify a custom kind that will be shown in the result. The `location` override uses the format `file:line:column` (line and column default to 1 if omitted). This is particularly useful when you want to report results at a higher-level definition rather than at the low-level generated code. The `location` file path is assumed to be relative to the project root if a relative path is given.
+The `name` override allows you to specify a custom name that will be shown in the result. The `kind` override allows you to specify a custom kind that will be shown in the result. The `location` override uses the format `file:line:column` (line and column default to 1 if omitted). This is particularly useful when you want to report results at a higher-level definition rather than at the low-level generated code. The `location` file path is assumed to be relative to the project root if a relative path is given.
 
 ## Xcode Integration
 

@@ -20,7 +20,7 @@ final class CsvFormatter: OutputFormatter {
         for result in results {
             let line = format(
                 kind: declarationKind(from: result.declaration),
-                name: result.declaration.name,
+                name: declarationName(from: result.declaration),
                 modifiers: result.declaration.modifiers,
                 attributes: result.declaration.attributes.mapSet(\.description),
                 accessibility: result.declaration.accessibility.value.rawValue,

@@ -62,6 +62,18 @@ final class OutputFormatterDeterminismTest: XCTestCase {
         assertKeysSorted(in: output)
     }
 
+    func testNameOverride() throws {
+        let declaration = try XCTUnwrap(results.first).declaration
+        declaration.commentCommands = [.override([.name("OverriddenName")])]
+
+        let xcodeOutput = try XCTUnwrap(XcodeFormatter(configuration: configuration, logger: logger).format(results, colored: false))
+        XCTAssertTrue(xcodeOutput.contains("Unused class 'OverriddenName'"), xcodeOutput)
+
+        let jsonOutput = try XCTUnwrap(JsonFormatter(configuration: configuration, logger: logger).format(results, colored: false))
+        let object = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(jsonOutput.utf8)) as? [[String: Any]]).first
+        XCTAssertEqual(object?["name"] as? String, "OverriddenName")
+    }
+
     // MARK: - Private
 
     private func assertKeysSorted(in output: String, file: StaticString = #filePath, line: UInt = #line) {

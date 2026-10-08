@@ -9,6 +9,7 @@
 - Updated the XcodeProj dependency.
 - Support Xcode's new JSON project format (experimental).
 - Updated swift-syntax dependency to 604.0.0.
+- Added the `name` option to the `// periphery:override` comment command.
 
 ##### Bug Fixes
 
