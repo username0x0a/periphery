@@ -10,6 +10,7 @@
 - Support Xcode's new JSON project format (experimental).
 - Updated swift-syntax dependency to 604.0.0.
 - Added the `name` option to the `// periphery:override` comment command.
+- Added a troubleshooting documentation link to USR conflict warnings.
 
 ##### Bug Fixes
 

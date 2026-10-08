@@ -558,6 +558,14 @@ You have a few options to work around this:
 - Filter the results to remove known instances.
 - Run Periphery once for each build configuration and merge the results. You can pass arguments to the underlying build by specifying them after `--`, e.g., `periphery scan ... -- -configuration release`.
 
+### Declaration conflict detected
+
+Periphery identifies declarations by their USR, a unique identifier assigned by the compiler that includes the name of the module containing the declaration. If two declarations in different source files have the same USR, Periphery warns that a declaration conflict has been detected, and results for the affected declarations may be inconsistent or incorrect. Common causes are:
+
+- Multiple build modules with the same name, e.g., targets in different projects or packages with the same name, or targets that set the same `PRODUCT_MODULE_NAME`. Make sure all modules are uniquely named.
+- Stale data in the index store left by modules that have since been renamed or removed. Pass the `--clean-build` option to the scan command to remove existing build artifacts.
+- Multiple index stores containing different builds of the same module, passed with `--index-store-path`. Only pass the index stores produced by a single build.
+
 ### Swift package is platform-specific
 
 Periphery uses `swift build` to compile a Swift package, which will fail if the Swift package is platform-specific (e.g., to iOS).

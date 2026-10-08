@@ -163,6 +163,7 @@ public final class SourceGraph {
                 Existing declaration: \(existingDecl), declared in modules: \(existingDecl.location.file.modules.sorted())
                 Conflicting declaration: \(declaration), declared in modules: \(declaration.location.file.modules.sorted())
                 To resolve this warning, make sure all build modules are uniquely named.
+                See https://github.com/username0x0a/periphery/blob/master/README.md#declaration-conflict-detected for troubleshooting.
                 """)
                 // Keep the declaration that sorts first to ensure deterministic results
                 // regardless of indexing order.
