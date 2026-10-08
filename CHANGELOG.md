@@ -7,6 +7,7 @@
 ##### Enhancements
 
 - Updated the XcodeProj dependency.
+- Support Xcode's new JSON project format (experimental).
 
 ##### Bug Fixes
 
