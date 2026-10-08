@@ -937,7 +937,7 @@ final class RetentionTest: FixtureSourceGraphTestCase {
     }
 
     #if os(macOS) && compiler(>=6.4)
-        // SwiftUI's @State is a macro since Xcode 27.
+        /// SwiftUI's @State is a macro since Xcode 27.
         func testSwiftUIStateMacro() {
             analyze(retainPublic: true) {
                 assertReferenced(.struct("FixtureSwiftUIStateView")) {

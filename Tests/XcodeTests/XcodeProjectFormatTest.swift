@@ -5,8 +5,8 @@ import Shared
 import SourceGraph
 import SystemPackage
 @testable import TestShared
-@testable import XcodeSupport
 import XcodeProj
+@testable import XcodeSupport
 import XCTest
 
 final class XcodeProjectFormatTest: XCTestCase {
@@ -27,7 +27,7 @@ final class XcodeProjectFormatTest: XCTestCase {
         // Convert a copy of the UIKit project to the JSON project format introduced in Xcode 27.2.
         let projectDirectory = UIKitProjectPath.removingLastComponent()
         try FileManager.default.copyItem(atPath: projectDirectory.string, toPath: tmpPath.string)
-        let jsonProjectPath = tmpPath.appending(try XCTUnwrap(UIKitProjectPath.lastComponent).string)
+        let jsonProjectPath = try tmpPath.appending(XCTUnwrap(UIKitProjectPath.lastComponent).string)
         try XcodeProj(pathString: jsonProjectPath.string).write(path: Path(jsonProjectPath.string), format: .xcproj)
         try FileManager.default.removeItem(atPath: jsonProjectPath.appending("project.pbxproj").string)
         XCTAssertTrue(jsonProjectPath.appending("project.xcproj").exists)

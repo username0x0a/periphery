@@ -39,7 +39,7 @@ final class XcodeTargetTest: XCTestCase {
     }
 
     func testSourceFileInFileSystemSynchronizedFolder() throws {
-        let target = project.targets.first { $0.name == "UIKitProject" }!
+        let target = try XCTUnwrap(project.targets.first { $0.name == "UIKitProject" })
         try target.identifyFiles()
 
         XCTAssertTrue(target.files(kind: .interfaceBuilder).contains {

@@ -46,7 +46,7 @@ final class DeclarationConflictTest: XCTestCase {
         }
     }
 
-    func testDoesNotThrowWithoutConflicts() throws {
+    func testDoesNotThrowWithoutConflicts() {
         let graph = SourceGraph(configuration: Configuration())
         graph.add(makeDeclaration(usr: "s:6Module1AV", path: "/Project/A.swift", module: "Module"))
         graph.add(makeDeclaration(usr: "s:6Module1BV", path: "/Project/B.swift", module: "Module"))
