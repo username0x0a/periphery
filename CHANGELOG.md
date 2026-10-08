@@ -6,7 +6,7 @@
 
 ##### Enhancements
 
-- None.
+- Updated the XcodeProj dependency.
 
 ##### Bug Fixes
 

@@ -50,9 +50,10 @@ public final class XcodeWorkspace: XcodeProjectlike {
     private func collectProjectPaths(in elements: [XCWorkspaceDataElement], groups: [XCWorkspaceDataGroup] = []) -> [FilePath] {
         var paths: [FilePath] = []
 
+        // Other elements, such as filesystem-synchronized groups, do not list their contents. They are not matched
+        // exhaustively, as the Bazel build uses an older XcodeProj version without them.
         for child in elements {
-            switch child {
-            case let .file(ref):
+            if case let .file(ref) = child {
                 let basePath = FilePath(groups.map(\.location.path).filter { !$0.isEmpty }.joined(separator: "/"))
                 let path = FilePath(ref.location.path)
                 let fullPath = basePath.pushing(path)
@@ -60,7 +61,7 @@ public final class XcodeWorkspace: XcodeProjectlike {
                 if fullPath.extension == "xcodeproj", shouldLoadProject(fullPath) {
                     paths.append(fullPath)
                 }
-            case let .group(group):
+            } else if case let .group(group) = child {
                 paths += collectProjectPaths(in: group.children, groups: groups + [group])
             }
         }
