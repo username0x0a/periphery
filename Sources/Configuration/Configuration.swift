@@ -122,9 +122,6 @@ public final class Configuration {
     @Setting(key: "skip_build", defaultValue: false)
     public var skipBuild: Bool
 
-    @Setting(key: "skip_schemes_validation", defaultValue: false)
-    public var skipSchemesValidation: Bool
-
     @Setting(key: "clean_build", defaultValue: false)
     public var cleanBuild: Bool
 
@@ -231,7 +228,7 @@ public final class Configuration {
         $disableUnusedImportAnalysis, $superfluousIgnoreComments, $retainUnusedImportedModules,
         $externalEncodableProtocols, $externalCodableProtocols, $externalTestCaseClasses, $verbose, $quiet, $color,
         $disableUpdateCheck, $strict, $indexStorePath,
-        $skipBuild, $skipSchemesValidation, $cleanBuild, $buildArguments, $xcodeListArguments, $relativeResults,
+        $skipBuild, $cleanBuild, $buildArguments, $xcodeListArguments, $relativeResults,
         $jsonPackageManifestPath, $retainCodableProperties, $retainEncodableProperties, $retainEquatableProperties,
         $retainHashableProperties, $baseline, $writeBaseline,
         $writeResults, $genericProjectConfig, $bazel, $bazelFilter, $bazelQuery, $bazelIndexStore, $bazelCheckVisibility,

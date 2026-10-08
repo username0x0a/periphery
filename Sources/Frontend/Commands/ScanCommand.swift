@@ -117,9 +117,6 @@ struct ScanCommand: ParsableCommand {
     @Flag(help: "Skip the project build step")
     var skipBuild: Bool = defaultConfiguration.$skipBuild.defaultValue
 
-    @Flag(help: "Skip schemes validation")
-    var skipSchemesValidation: Bool = defaultConfiguration.$skipSchemesValidation.defaultValue
-
     @Flag(help: "Output result paths relative to the current directory")
     var relativeResults: Bool = defaultConfiguration.$relativeResults.defaultValue
 
@@ -217,7 +214,6 @@ struct ScanCommand: ParsableCommand {
         configuration.apply(\.$skipBuild, skipBuild)
         configuration.apply(\.$excludeTests, excludeTests)
         configuration.apply(\.$excludeTargets, excludeTargets)
-        configuration.apply(\.$skipSchemesValidation, skipSchemesValidation)
         configuration.apply(\.$cleanBuild, cleanBuild)
         configuration.apply(\.$buildArguments, buildArguments)
         configuration.apply(\.$relativeResults, relativeResults)

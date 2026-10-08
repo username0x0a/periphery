@@ -2,7 +2,7 @@
 
 ##### Breaking
 
-- None.
+- Removed the `--skip-schemes-validation` option and `skip_schemes_validation` configuration option. Scheme names are no longer validated, avoiding a slow call to `xcodebuild`, so any scheme can be given, including that of a Swift package.
 
 ##### Enhancements
 

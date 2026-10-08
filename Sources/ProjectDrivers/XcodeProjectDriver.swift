@@ -54,21 +54,9 @@
                 )
             }
 
-            let schemes: Set<String>
-
-            if configuration.skipSchemesValidation {
-                schemes = Set(configuration.schemes)
-            } else {
-                // Ensure schemes exist within the project
-                schemes = try project.schemes(
-                    additionalArguments: configuration.xcodeListArguments
-                ).filter { configuration.schemes.contains($0) }
-                let validSchemeNames = schemes.mapSet { $0 }
-
-                if let scheme = Set(configuration.schemes).subtracting(validSchemeNames).first {
-                    throw PeripheryError.invalidScheme(name: scheme, project: project.path.lastComponent?.string ?? "")
-                }
-            }
+            // Schemes are not validated, as listing them requires a slow call to xcodebuild, and any scheme can be
+            // given, including that of a Swift package.
+            let schemes = Set(configuration.schemes)
 
             self.init(
                 logger: logger,

@@ -6,7 +6,6 @@ public enum PeripheryError: Error, LocalizedError, CustomStringConvertible {
     case shellOutputEncodingFailed(cmd: [String], encoding: String.Encoding)
     case usageError(String)
     case underlyingError(Error)
-    case invalidScheme(name: String, project: String)
     case sourceGraphIntegrityError(message: String)
     case guidedSetupError(message: String)
     case updateCheckError(message: String)
@@ -32,8 +31,6 @@ public enum PeripheryError: Error, LocalizedError, CustomStringConvertible {
             return message
         case let .underlyingError(error):
             return describe(error)
-        case let .invalidScheme(name, project):
-            return "Scheme '\(name)' does not exist in '\(project)'."
         case let .sourceGraphIntegrityError(message):
             return message
         case let .guidedSetupError(message):
