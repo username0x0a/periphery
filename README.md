@@ -560,7 +560,7 @@ You have a few options to work around this:
 
 ### Declaration conflict detected
 
-Periphery identifies declarations by their USR, a unique identifier assigned by the compiler that includes the name of the module containing the declaration. If two declarations in different source files have the same USR, Periphery warns that a declaration conflict has been detected, and results for the affected declarations may be inconsistent or incorrect. Common causes are:
+Periphery identifies declarations by their USR, a unique identifier assigned by the compiler that includes the name of the module containing the declaration. If two declarations in different source files have the same USR, results for the affected declarations would be inconsistent or incorrect, so the scan fails with an error listing the conflicting declarations. Common causes are:
 
 - Multiple build modules with the same name, e.g., targets in different projects or packages with the same name, or targets that set the same `PRODUCT_MODULE_NAME`. Make sure all modules are uniquely named.
 - Stale data in the index store left by modules that have since been renamed or removed. Pass the `--clean-build` option to the scan command to remove existing build artifacts.

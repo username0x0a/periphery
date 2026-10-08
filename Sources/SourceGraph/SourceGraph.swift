@@ -1,6 +1,5 @@
 import Configuration
 import Foundation
-import Logger
 import Shared
 
 public final class SourceGraph {
@@ -23,6 +22,8 @@ public final class SourceGraph {
     public private(set) var extensions: [Declaration: Set<Declaration>] = [:]
     public private(set) var commandIgnoredDeclarations: [Declaration: CommandIgnoreKind] = [:]
     public private(set) var functionsWithIgnoredParameters: Set<Declaration> = []
+    /// Declarations that share a USR with another declaration, keyed by USR.
+    public private(set) var conflictingDeclarationsByUsr: [String: [Declaration]] = [:]
 
     private var indexedModules: Set<String> = []
     private var unindexedExportedModules: Set<String> = []
@@ -31,11 +32,9 @@ public final class SourceGraph {
     private var moduleToExportingModules: [String: Set<String>] = [:]
 
     private let configuration: Configuration
-    private let logger: Logger
 
-    public init(configuration: Configuration, logger: Logger) {
+    public init(configuration: Configuration) {
         self.configuration = configuration
-        self.logger = logger
     }
 
     public func indexingComplete() {
@@ -157,14 +156,10 @@ public final class SourceGraph {
         allDeclarationsByKind[declaration.kind, default: []].insert(declaration)
         for usr in declaration.usrs {
             if let existingDecl = allDeclarationsByUsr[usr] {
-                logger.warn("""
-                Declaration conflict detected: a declaration with the USR '\(usr)' has already been indexed.
-                This issue can cause inconsistent and incorrect results.
-                Existing declaration: \(existingDecl), declared in modules: \(existingDecl.location.file.modules.sorted())
-                Conflicting declaration: \(declaration), declared in modules: \(declaration.location.file.modules.sorted())
-                To resolve this warning, make sure all build modules are uniquely named.
-                See https://github.com/username0x0a/periphery/blob/master/README.md#declaration-conflict-detected for troubleshooting.
-                """)
+                if conflictingDeclarationsByUsr[usr] == nil {
+                    conflictingDeclarationsByUsr[usr] = [existingDecl]
+                }
+                conflictingDeclarationsByUsr[usr]?.append(declaration)
                 // Keep the declaration that sorts first to ensure deterministic results
                 // regardless of indexing order.
                 if declaration < existingDecl {

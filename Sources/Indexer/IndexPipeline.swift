@@ -28,6 +28,8 @@ public struct IndexPipeline {
             swiftVersion: swiftVersion
         ).perform()
 
+        try validateNoDeclarationConflicts()
+
         if !plan.plistPaths.isEmpty {
             try InfoPlistIndexer(
                 infoPlistFiles: plan.plistPaths,
@@ -66,5 +68,22 @@ public struct IndexPipeline {
 
         graph.withLock { $0.indexingComplete() }
         return scannedLOC
+    }
+
+    // MARK: - Private
+
+    private func validateNoDeclarationConflicts() throws {
+        let conflictingDeclarationsByUsr = graph.withLock { $0.conflictingDeclarationsByUsr }
+        guard !conflictingDeclarationsByUsr.isEmpty else { return }
+
+        // Files are indexed concurrently, so the declarations are sorted to produce a stable description.
+        let conflicts = conflictingDeclarationsByUsr.keys.sorted().map { usr in
+            let declarations = conflictingDeclarationsByUsr[usr, default: []]
+                .sorted { $0.location < $1.location }
+                .map { "  - \($0), declared in modules: \($0.location.file.modules.sorted())" }
+            return (["USR '\(usr)':"] + declarations).joined(separator: "\n")
+        }
+
+        throw PeripheryError.declarationConflicts(conflicts)
     }
 }

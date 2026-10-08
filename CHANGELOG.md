@@ -3,6 +3,7 @@
 ##### Breaking
 
 - Removed the `--skip-schemes-validation` option and `skip_schemes_validation` configuration option. Scheme names are no longer validated, avoiding a slow call to `xcodebuild`, so any scheme can be given, including that of a Swift package.
+- Conflicting declarations now throw an error.
 
 ##### Enhancements
 
@@ -10,7 +11,7 @@
 - Support Xcode's new JSON project format (experimental).
 - Updated swift-syntax dependency to 604.0.0.
 - Added the `name` option to the `// periphery:override` comment command.
-- Added a troubleshooting documentation link to USR conflict warnings.
+- Added a troubleshooting documentation link to USR conflict errors.
 
 ##### Bug Fixes
 

@@ -7,9 +7,7 @@ import XCTest
 
 final class DeterminismRegressionTest: XCTestCase {
     private func makeGraph() -> SourceGraph {
-        let configuration = Configuration()
-        let logger = Logger(quiet: true, verbose: false, colorMode: .never)
-        return SourceGraph(configuration: configuration, logger: logger)
+        SourceGraph(configuration: Configuration())
     }
 
     private func makeSwiftVersion() -> SwiftVersion {

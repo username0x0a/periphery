@@ -18,6 +18,7 @@ public enum PeripheryError: Error, LocalizedError, CustomStringConvertible {
     case jsonDeserializationError(error: Error, json: String)
     case indexStoreNotFound(derivedDataPath: String)
     case changeCurrentDirectoryFailed(FilePath)
+    case declarationConflicts([String])
 
     public var errorDescription: String? {
         switch self {
@@ -28,6 +29,21 @@ public enum PeripheryError: Error, LocalizedError, CustomStringConvertible {
             let joinedCmd = cmd.joined(separator: " ")
             return "Shell command '\(joinedCmd)' output encoding to \(encoding) failed."
         case let .usageError(message):
+            return message
+        case let .declarationConflicts(conflicts):
+            let maxListed = 20
+            var message = """
+            Declaration conflicts detected: multiple declarations have the same USR, which causes inconsistent and \
+            incorrect results. Make sure all build modules are uniquely named. See \
+            https://github.com/username0x0a/periphery/blob/master/README.md#declaration-conflict-detected for \
+            troubleshooting.
+            """
+            message += "\n\n" + conflicts.prefix(maxListed).joined(separator: "\n\n")
+
+            if conflicts.count > maxListed {
+                message += "\n\n... and \(conflicts.count - maxListed) more."
+            }
+
             return message
         case let .underlyingError(error):
             return describe(error)
