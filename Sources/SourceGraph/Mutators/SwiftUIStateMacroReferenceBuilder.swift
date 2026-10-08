@@ -12,6 +12,7 @@ import Shared
 /// retained, so the peers and the generated accessors of the state property are unretained.
 final class SwiftUIStateMacroReferenceBuilder: SourceGraphMutator {
     private static let stateMacroUsr = "s:7SwiftUI5Stateyycfm"
+    private static let stateAttributeNames: Set<String> = ["State", "SwiftUI.State", "SwiftUICore.State"]
 
     private let graph: SourceGraph
 
@@ -22,7 +23,7 @@ final class SwiftUIStateMacroReferenceBuilder: SourceGraphMutator {
     func mutate() {
         for property in graph.declarations(ofKind: .varInstance) {
             guard !property.isImplicit,
-                  property.references.contains(where: { $0.declarationKind == .macro && $0.usr == Self.stateMacroUsr }),
+                  isStateMacroProperty(property),
                   let parent = property.parent
             else { continue }
 
@@ -56,6 +57,20 @@ final class SwiftUIStateMacroReferenceBuilder: SourceGraphMutator {
     }
 
     // MARK: - Private
+
+    private func isStateMacroProperty(_ property: Declaration) -> Bool {
+        let macroReferences = property.references.filter { $0.declarationKind == .macro }
+
+        if macroReferences.contains(where: { $0.usr == Self.stateMacroUsr }) {
+            return true
+        }
+
+        // Fall back to identifying the macro by name, in case it moves to another module, e.g. SwiftUICore. The
+        // attribute is also required, so that unrelated macros named State are not matched. The attribute alone is
+        // not sufficient, as before Xcode 27 @State is a property wrapper, which this mutator does not apply to.
+        return macroReferences.contains(where: { $0.name == "State()" })
+            && property.attributes.contains(where: { Self.stateAttributeNames.contains($0.name) })
+    }
 
     private func peerDeclarations(of property: Declaration, in parent: Declaration) -> Set<Declaration> {
         // All peers are located at the macro attribute, identify the location via the backing storage peer.
