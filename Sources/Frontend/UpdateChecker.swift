@@ -5,6 +5,17 @@ import Shared
 
 #if canImport(FoundationNetworking)
     import FoundationNetworking
+    import Synchronization
+
+    /// Deallocating a URLSession on Linux crashes with Foundation in Swift 6.4 ("_MultiHandle deallocated with
+    /// non-zero retain count"). Sessions are therefore kept alive until the process exits.
+    enum URLSessionRetainer {
+        private static let sessions = Mutex<[URLSession]>([])
+
+        static func retain(_ session: URLSession) {
+            sessions.withLock { $0.append(session) }
+        }
+    }
 #endif
 
 final class UpdateChecker {
@@ -30,7 +41,11 @@ final class UpdateChecker {
     }
 
     deinit {
-        urlSession.invalidateAndCancel()
+        #if canImport(FoundationNetworking)
+            URLSessionRetainer.retain(urlSession)
+        #else
+            urlSession.invalidateAndCancel()
+        #endif
     }
 
     func run() {

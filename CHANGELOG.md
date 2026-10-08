@@ -16,7 +16,7 @@
 
 ##### Bug Fixes
 
-- None.
+- Fix a crash on Linux with Swift 6.4 when the scan completes, caused by deallocating network sessions.
 
 ## 3.9.0 (2026-10-08)
 

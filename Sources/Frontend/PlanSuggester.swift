@@ -65,7 +65,11 @@ final class PlanSuggester {
     }
 
     deinit {
-        urlSession.invalidateAndCancel()
+        #if canImport(FoundationNetworking)
+            URLSessionRetainer.retain(urlSession)
+        #else
+            urlSession.invalidateAndCancel()
+        #endif
     }
 
     func run() {
