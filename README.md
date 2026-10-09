@@ -1,17 +1,10 @@
 > [!IMPORTANT]
 >
-> Periphery has transitioned from an open-source project to a commercial product. This change will support the continued maintenance of Periphery and the development of more advanced features.
+> Periphery has transitioned from an open-source project to a commercial product.
 >
-> This repository is preserved as a historical record of the original open-source project and will remain available for anyone who wishes to fork and continue building upon it.
->
-> All existing issues have been migrated to the new [issue tracker](https://github.com/periphery-pro/issues). Please use that repository to browse existing issues or report a new one.
->
-> **[Read more about the transition.](https://periphery.pro/a-new-chapter)**
+> This repository has been forked to preserve continuous operations for workflows that need to continue working properly. No guarantees given. 🙃
 
 <br>
-
-<details>
-<summary>Click to expand original README</summary>
 
 <h1 align="center">
   <img src="assets/logo.png" alt="Periphery" height="60" />
@@ -595,32 +588,6 @@ Due to some underlying bugs in Swift, Periphery may in some instances report inc
 
 ## Sponsors ![Sponsors](assets/sponsor-20.svg)
 
-Periphery is a passion project that takes a huge amount of effort to maintain and develop. If you find Periphery useful, please consider sponsoring through [GitHub Sponsors](https://github.com/sponsors/peripheryapp).
+None yet. 😆
 
-Special thanks go to the following generous sponsors:
-
-### SaGa Corp
-
-[SaGa Corp](https://www.sagacorp.fr) develops unique technology for financial players and their customers.
-
-<a href="https://www.sagacorp.fr" alt="SaGa Corp">
-    <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://github.com/username0x0a/periphery/raw/master/assets/sponsors/saga-corp-white.svg">
-        <source media="(prefers-color-scheme: light)" srcset="https://github.com/username0x0a/periphery/raw/master/assets/sponsors/saga-corp-black.svg">
-        <img src="https://github.com/username0x0a/periphery/raw/master/assets/sponsors/saga-corp-black.svg" width="150">
-    </picture>
-</a>
-
-### Emerge Tools
-
-[Emerge Tools](https://www.emergetools.com) is a suite of revolutionary products designed to supercharge mobile apps and the teams that build them.
-
-<a href="https://www.emergetools.com" alt="Emerge Tools">
-    <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://github.com/username0x0a/periphery/raw/master/assets/sponsors/emerge-tools-vertical-white.svg">
-        <source media="(prefers-color-scheme: light)" srcset="https://github.com/username0x0a/periphery/raw/master/assets/sponsors/emerge-tools-vertical-black.svg">
-        <img src="https://github.com/username0x0a/periphery/raw/master/assets/sponsors/emerge-tools-vertical-black.svg">
-    </picture>
-</a>
-
-</details>
+**Feel free to contribute, tho! 🙌**
