@@ -281,6 +281,12 @@ final class SwiftIndexer: Indexer {
                 }
             }
 
+            let parameterAttributeNames = ParameterAttributeNameCollector.collect(from: multiplexingSyntaxVisitor.syntax)
+
+            if !parameterAttributeNames.isEmpty {
+                graph.withLock { $0.addParameterAttributeNames(parameterAttributeNames) }
+            }
+
             associateLatentReferences()
             associateDanglingReferences(
                 excluding: TopLevelCodeCollector.collect(

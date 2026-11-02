@@ -58,6 +58,7 @@ public struct Parameter: Item, Hashable {
     public let name: PartKind
     let metatype: String?
     let isIsolated: Bool
+    let hasAttributes: Bool
     let location: Location
 
     public let items: [Item] = []
@@ -252,6 +253,7 @@ struct UnusedParameterParser {
                          name: name,
                          metatype: metatype,
                          isIsolated: isIsolated(parameter: syntax),
+                         hasAttributes: !syntax.attributes.isEmpty,
                          location: location)
     }
 

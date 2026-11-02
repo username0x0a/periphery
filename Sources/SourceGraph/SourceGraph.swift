@@ -24,6 +24,7 @@ public final class SourceGraph {
     public private(set) var functionsWithIgnoredParameters: Set<Declaration> = []
     /// Declarations that share a USR with another declaration, keyed by USR.
     public private(set) var conflictingDeclarationsByUsr: [String: [Declaration]] = [:]
+    public private(set) var parameterAttributeNames: Set<String> = []
 
     private var indexedModules: Set<String> = []
     private var unindexedExportedModules: Set<String> = []
@@ -235,6 +236,10 @@ public final class SourceGraph {
 
     public func addIndexedSourceFile(_ file: SourceFile) {
         indexedSourceFiles.append(file)
+    }
+
+    public func addParameterAttributeNames(_ names: Set<String>) {
+        parameterAttributeNames.formUnion(names)
     }
 
     public func addIndexedModules(_ modules: Set<String>) {

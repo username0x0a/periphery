@@ -27,6 +27,7 @@ swift_library(
         "SyntaxAnalysis/DeclarationSyntaxVisitor.swift",
         "SyntaxAnalysis/ImportSyntaxVisitor.swift",
         "SyntaxAnalysis/MultiplexingSyntaxVisitor.swift",
+        "SyntaxAnalysis/ParameterAttributeNameCollector.swift",
         "SyntaxAnalysis/SourceLocationBuilder.swift",
         "SyntaxAnalysis/TopLevelCodeCollector.swift",
         "SyntaxAnalysis/TypeSyntaxInspector.swift",
