@@ -289,6 +289,8 @@ swift_library(
         "Configuration/ColorOption.swift",
         "Configuration/Configuration.swift",
         "Configuration/OutputFormat.swift",
+        "Configuration/Setting.swift",
+        "Configuration/SettingValue.swift",
     ],
     module_name = "Configuration",
     deps = [
