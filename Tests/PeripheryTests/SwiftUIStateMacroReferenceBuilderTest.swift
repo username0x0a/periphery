@@ -102,7 +102,7 @@ final class SwiftUIStateMacroReferenceBuilderTest: XCTestCase {
 
     private func mutate(_ graph: SourceGraph) throws {
         let logger = Logger(quiet: true, verbose: false, colorMode: .never)
-        let swiftVersion = SwiftVersion(shell: ShellImpl(logger: logger))
+        let swiftVersion = try SwiftVersion(shell: ShellImpl(logger: logger))
         try SwiftUIStateMacroReferenceBuilder(graph: graph, configuration: Configuration(), swiftVersion: swiftVersion).mutate()
     }
 }

@@ -243,7 +243,7 @@ struct ScanCommand: ParsableCommand {
                 newlinePrefix: true // Print a newline after ^C
             )
         }
-        let swiftVersion = SwiftVersion(shell: shell)
+        let swiftVersion = try SwiftVersion(shell: shell)
         logger.debug(swiftVersion.fullVersion)
         try swiftVersion.validateVersion()
 

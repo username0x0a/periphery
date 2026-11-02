@@ -26,7 +26,7 @@ final class DeclarationConflictTest: XCTestCase {
             graph: SourceGraphMutex(graph: graph),
             logger: logger.contextualized(with: "index"),
             configuration: Configuration(),
-            swiftVersion: SwiftVersion(shell: ShellImpl(logger: logger))
+            swiftVersion: try SwiftVersion(shell: ShellImpl(logger: logger))
         )
 
         XCTAssertThrowsError(try pipeline.perform()) { error in
