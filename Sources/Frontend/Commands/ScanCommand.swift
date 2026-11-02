@@ -233,6 +233,7 @@ struct ScanCommand: ParsableCommand {
         configuration.apply(\.$bazelCheckVisibility, bazelCheckVisibility)
 
         configuration.buildFilenameMatchers()
+        let baseline = try ScanPreflight.validatePaths(of: configuration)
 
         let logger = Logger(configuration: configuration)
         ScanPreflight.applyOutputFormatRequirements(to: configuration, logger: logger)
@@ -264,11 +265,6 @@ struct ScanCommand: ParsableCommand {
 
         let results = scanOutput.results
         let interval = logger.beginInterval("result:output")
-        var baseline: Baseline?
-
-        if let baselinePath = configuration.baseline {
-            baseline = try Baseline.load(from: baselinePath)
-        }
 
         let filteredResults = try OutputDeclarationFilter(configuration: configuration, logger: logger).filter(results, with: baseline)
 
@@ -276,9 +272,7 @@ struct ScanCommand: ParsableCommand {
             let usrs = filteredResults
                 .flatMapSet { $0.usrs }
                 .union(baseline?.usrs ?? [])
-            let baseline = Baseline.v1(usrs: usrs.sorted())
-            let data = try JSONEncoder().encode(baseline)
-            try data.write(to: baselinePath.url)
+            try Self.writeBaseline(.v1(usrs: usrs.sorted()), to: baselinePath)
         }
 
         let outputFormat = configuration.outputFormat
@@ -314,6 +308,10 @@ struct ScanCommand: ParsableCommand {
         if !filteredResults.isEmpty, configuration.strict {
             throw PeripheryError.foundIssues(count: filteredResults.count)
         }
+    }
+
+    static func writeBaseline(_ baseline: Baseline, to path: FilePath) throws {
+        try JSONEncoder().encode(baseline).write(to: path.url, options: .atomic)
     }
 
     // MARK: - Private

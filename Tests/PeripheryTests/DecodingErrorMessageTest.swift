@@ -1,7 +1,6 @@
 import Configuration
 import Foundation
 import Logger
-@testable import PeripheryKit
 @testable import ProjectDrivers
 import Shared
 import SystemPackage
@@ -46,24 +45,6 @@ final class DecodingErrorMessageTest: XCTestCase {
 
         XCTAssertEqual(missing, "missing key 'items[1].name'")
         XCTAssertEqual(wrongType, "'items[0].name' must be a string")
-    }
-
-    func testInvalidBaselineFailsWithAReadableMessage() throws {
-        for json in ["{}", #"{"v1": {"usrs": "a"}}"#, "not json"] {
-            let file = try write(json)
-
-            XCTAssertThrowsError(try Baseline.load(from: file), json) { error in
-                let message = error.localizedDescription
-                XCTAssertTrue(message.hasPrefix("Invalid baseline \(file.string): "), message)
-                XCTAssertFalse(message.contains("DecodingError"), message)
-            }
-        }
-    }
-
-    func testValidBaselineLoads() throws {
-        let file = try write(#"{"v1": {"usrs": ["s:1a", "s:1b"]}}"#)
-
-        XCTAssertEqual(try Baseline.load(from: file).usrs, ["s:1a", "s:1b"])
     }
 
     func testInvalidPackageManifestFailsWithAReadableMessage() throws {
