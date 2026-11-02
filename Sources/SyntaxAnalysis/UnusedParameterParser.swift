@@ -28,7 +28,7 @@ public struct Function: Item, Hashable {
 
 public struct Attribute {
     let name: String
-    let arguments: String?
+    let isUnavailableOnAllPlatforms: Bool
 }
 
 public struct Parameter: Item, Hashable {
@@ -362,7 +362,7 @@ struct UnusedParameterParser {
                 if case let .attribute(attr) = $0 {
                     return Attribute(
                         name: attr.attributeName.trimmed.description,
-                        arguments: attr.arguments?.trimmed.description
+                        isUnavailableOnAllPlatforms: isUnavailableOnAllPlatforms(attr)
                     )
                 }
 
@@ -378,6 +378,21 @@ struct UnusedParameterParser {
             genericParameters: genericParamNames,
             attributes: parsedAttributes
         )
+    }
+
+    private func isUnavailableOnAllPlatforms(_ attribute: AttributeSyntax) -> Bool {
+        guard attribute.attributeName.trimmed.description == "available",
+              case let .availability(arguments)? = attribute.arguments
+        else { return false }
+
+        let tokens = arguments.map { argument -> String? in
+            guard case let .token(token) = argument.argument else { return nil }
+
+            return token.text
+        }
+
+        // The platform is the first argument, '*' means every platform.
+        return tokens.first == "*" && tokens.contains("unavailable")
     }
 
     private func buildFullName(for function: String, with params: [Parameter]) -> String {
