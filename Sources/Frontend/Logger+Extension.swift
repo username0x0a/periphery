@@ -12,7 +12,9 @@ public extension Logger {
         self.init(
             quiet: configuration.quiet,
             verbose: configuration.verbose,
-            colorMode: colorMode
+            colorMode: colorMode,
+            // With machine-readable formats, stdout only carries the results.
+            messagesToStderr: !configuration.outputFormat.supportsAuxiliaryOutput
         )
     }
 }

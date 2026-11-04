@@ -299,7 +299,7 @@ struct ScanCommand: ParsableCommand {
                 logger.info("", canQuiet: true)
             }
 
-            logger.info(output, canQuiet: false)
+            logger.output(output)
         }
 
         if let resultsPath = configuration.writeResults {
