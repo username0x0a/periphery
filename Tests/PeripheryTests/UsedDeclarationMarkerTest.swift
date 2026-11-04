@@ -16,8 +16,7 @@ final class UsedDeclarationMarkerTest: XCTestCase {
     )
 
     private func makeGraph() -> SourceGraph {
-        let logger = Logger(quiet: true, verbose: false, colorMode: .never)
-        return SourceGraph(configuration: Configuration(), logger: logger)
+        SourceGraph(configuration: Configuration())
     }
 
     private func mutate(_ graph: SourceGraph) {
