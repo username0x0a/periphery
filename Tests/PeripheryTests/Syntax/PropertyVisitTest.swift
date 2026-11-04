@@ -126,6 +126,15 @@ final class PropertyVisitTest: XCTestCase {
         XCTAssertEqual(result.variableTypeLocations, [fixtureLocation(line: 22, column: 32)])
     }
 
+    func testSetterAccessModifierDoesNotSetAccessibility() throws {
+        let privateSetter = try XCTUnwrap(results[fixtureLocation(line: 23, column: 22)])
+        XCTAssertNil(privateSetter.accessibility)
+        XCTAssertTrue(privateSetter.modifiers.contains("private"))
+
+        let internalSetter = try XCTUnwrap(results[fixtureLocation(line: 24, column: 30)])
+        XCTAssertEqual(internalSetter.accessibility, .public)
+    }
+
     // MARK: - Private
 
     private var fixturePath: SourceFile {

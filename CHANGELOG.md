@@ -27,6 +27,7 @@
 - Fix false positive redundant public accessibility for protocols whose public extension witnesses a requirement of another public protocol, and for types used only in inline arrays or pack expansions.
 - Report `public` members inside non-public extensions of non-public types as redundantly public.
 - Retain code referenced from `#Preview`s of used SwiftUI views.
+- Fix setter access modifiers such as `private(set)` being read as the access level of the declaration, e.g. `internal(set) public var` was treated as internal.
 
 ## 3.9.0 (2026-10-08)
 
