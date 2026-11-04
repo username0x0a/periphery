@@ -199,12 +199,18 @@ public final class Configuration {
 
     // MARK: - Helpers
 
-    public func apply<T: Equatable>(_ path: KeyPath<Configuration, Setting<T>>, _ value: T) {
-        let setting = self[keyPath: path]
+    /// Applies a value given on the command line, which takes precedence over the configuration file, even when it is
+    /// the default value. A nil value was not given, and leaves the setting unchanged.
+    public func apply<T: Equatable>(_ path: KeyPath<Configuration, Setting<T>>, _ value: T?) {
+        guard let value else { return }
 
-        if setting.defaultValue != value {
-            setting.wrappedValue = value
-        }
+        self[keyPath: path].wrappedValue = value
+    }
+
+    public func apply<T: Equatable>(_ path: KeyPath<Configuration, Setting<T?>>, _ value: T?) {
+        guard let value else { return }
+
+        self[keyPath: path].wrappedValue = value
     }
 
     public func buildFilenameMatchers() {

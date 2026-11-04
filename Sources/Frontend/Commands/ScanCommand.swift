@@ -13,7 +13,7 @@ struct ScanCommand: ParsableCommand {
     )
 
     @Argument(help: "Arguments following '--' will be passed to the underlying build tool, which is either 'swift build' or 'xcodebuild' depending on your project")
-    var buildArguments: [String] = defaultConfiguration.$buildArguments.defaultValue
+    var buildArguments: [String] = []
 
     @Flag(help: "Enable guided setup")
     var setup: Bool = defaultConfiguration.guidedSetup
@@ -28,112 +28,112 @@ struct ScanCommand: ParsableCommand {
     var project: FilePath?
 
     @Option(parsing: .upToNextOption, help: "Schemes to build. All targets built by these schemes will be scanned")
-    var schemes: [String] = defaultConfiguration.$schemes.defaultValue
+    var schemes: [String] = []
 
-    @Option(help: "Output format")
-    var format: OutputFormat = defaultConfiguration.$outputFormat.defaultValue
+    @Option(help: "Output format (default: \(defaultConfiguration.$outputFormat.defaultValue.rawValue))")
+    var format: OutputFormat?
 
-    @Flag(help: "Exclude test targets from indexing")
-    var excludeTests: Bool = defaultConfiguration.$excludeTests.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Exclude test targets from indexing")
+    var excludeTests: Bool?
 
     @Option(parsing: .upToNextOption, help: "Targets to exclude from indexing")
-    var excludeTargets: [String] = defaultConfiguration.$excludeTargets.defaultValue
+    var excludeTargets: [String] = []
 
     @Option(parsing: .upToNextOption, help: "Source file globs to exclude from indexing")
-    var indexExclude: [String] = defaultConfiguration.$indexExclude.defaultValue
+    var indexExclude: [String] = []
 
     @Option(parsing: .upToNextOption, help: "Source file globs to exclude from the results. Note that this option is purely cosmetic, these files will still be indexed")
-    var reportExclude: [String] = defaultConfiguration.$reportExclude.defaultValue
+    var reportExclude: [String] = []
 
     @Option(parsing: .upToNextOption, help: "Source file globs to include in the results. This option supersedes '--report-exclude'. Note that this option is purely cosmetic, these files will still be indexed")
-    var reportInclude: [String] = defaultConfiguration.$reportInclude.defaultValue
+    var reportInclude: [String] = []
 
     @Option(parsing: .upToNextOption, help: "Source file globs for which all containing declarations will be retained")
-    var retainFiles: [String] = defaultConfiguration.$retainFiles.defaultValue
+    var retainFiles: [String] = []
 
     @Option(parsing: .upToNextOption, help: "Index store paths. Implies '--skip-build'")
-    var indexStorePath: [FilePath] = defaultConfiguration.$indexStorePath.defaultValue
+    var indexStorePath: [FilePath] = []
 
-    @Flag(help: "Retain all public declarations, recommended for framework/library projects")
-    var retainPublic: Bool = defaultConfiguration.$retainPublic.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Retain all public declarations, recommended for framework/library projects")
+    var retainPublic: Bool?
 
     @Option(parsing: .upToNextOption, help: "Public SPIs (System Programming Interfaces) to check for unused code even when '--retain-public' is enabled")
-    var noRetainSPI: [String] = defaultConfiguration.$noRetainSPI.defaultValue
+    var noRetainSPI: [String] = []
 
-    @Flag(help: "Disable identification of redundant public accessibility")
-    var disableRedundantPublicAnalysis: Bool = defaultConfiguration.$disableRedundantPublicAnalysis.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Disable identification of redundant public accessibility")
+    var disableRedundantPublicAnalysis: Bool?
 
-    @Flag(help: "Disable identification of unused imports")
-    var disableUnusedImportAnalysis: Bool = defaultConfiguration.$disableUnusedImportAnalysis.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Disable identification of unused imports")
+    var disableUnusedImportAnalysis: Bool?
 
     @Flag(inversion: .prefixedNo, help: "Report superfluous ignore comments")
-    var superfluousIgnoreComments: Bool = defaultConfiguration.$superfluousIgnoreComments.defaultValue
+    var superfluousIgnoreComments: Bool?
 
     @Option(parsing: .upToNextOption, help: "Names of unused imported modules to retain")
-    var retainUnusedImportedModules: [String] = defaultConfiguration.$retainUnusedImportedModules.defaultValue
+    var retainUnusedImportedModules: [String] = []
 
-    @Flag(help: "Retain properties that are assigned, but never used")
-    var retainAssignOnlyProperties: Bool = defaultConfiguration.$retainAssignOnlyProperties.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Retain properties that are assigned, but never used")
+    var retainAssignOnlyProperties: Bool?
 
     @Option(parsing: .upToNextOption, help: "Property types to retain if the property is assigned, but never read")
-    var retainAssignOnlyPropertyTypes: [String] = defaultConfiguration.$retainAssignOnlyPropertyTypes.defaultValue
+    var retainAssignOnlyPropertyTypes: [String] = []
 
     @Option(parsing: .upToNextOption, help: "Names of external protocols that inherit Encodable. Properties and CodingKey enums of types conforming to these protocols will be retained")
-    var externalEncodableProtocols: [String] = defaultConfiguration.$externalEncodableProtocols.defaultValue
+    var externalEncodableProtocols: [String] = []
 
     @Option(parsing: .upToNextOption, help: "Names of external protocols that inherit Codable. Properties and CodingKey enums of types conforming to these protocols will be retained")
-    var externalCodableProtocols: [String] = defaultConfiguration.$externalCodableProtocols.defaultValue
+    var externalCodableProtocols: [String] = []
 
     @Option(parsing: .upToNextOption, help: "Names of XCTestCase subclasses that reside in external targets")
-    var externalTestCaseClasses: [String] = defaultConfiguration.$externalTestCaseClasses.defaultValue
+    var externalTestCaseClasses: [String] = []
 
-    @Flag(help: "Retain declarations that are exposed to Objective-C implicitly by inheriting NSObject classes, or explicitly with the @objc and @objcMembers attributes")
-    var retainObjcAccessible: Bool = defaultConfiguration.$retainObjcAccessible.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Retain declarations that are exposed to Objective-C implicitly by inheriting NSObject classes, or explicitly with the @objc and @objcMembers attributes")
+    var retainObjcAccessible: Bool?
 
-    @Flag(help: "Retain declarations that are exposed to Objective-C explicitly with the @objc and @objcMembers attributes")
-    var retainObjcAnnotated: Bool = defaultConfiguration.$retainObjcAnnotated.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Retain declarations that are exposed to Objective-C explicitly with the @objc and @objcMembers attributes")
+    var retainObjcAnnotated: Bool?
 
-    @Flag(help: "Retain unused protocol function parameters, even if the parameter is unused in all conforming functions")
-    var retainUnusedProtocolFuncParams: Bool = defaultConfiguration.$retainUnusedProtocolFuncParams.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Retain unused protocol function parameters, even if the parameter is unused in all conforming functions")
+    var retainUnusedProtocolFuncParams: Bool?
 
-    @Flag(help: "Retain SwiftUI previews")
-    var retainSwiftUIPreviews: Bool = defaultConfiguration.$retainSwiftUIPreviews.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Retain SwiftUI previews")
+    var retainSwiftUIPreviews: Bool?
 
-    @Flag(help: "Retain properties on Codable types (including Encodable and Decodable)")
-    var retainCodableProperties: Bool = defaultConfiguration.$retainCodableProperties.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Retain properties on Codable types (including Encodable and Decodable)")
+    var retainCodableProperties: Bool?
 
-    @Flag(help: "Retain properties on Encodable types only")
-    var retainEncodableProperties: Bool = defaultConfiguration.$retainEncodableProperties.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Retain properties on Encodable types only")
+    var retainEncodableProperties: Bool?
 
-    @Flag(help: "Retain properties on Equatable types, including Hashable types")
-    var retainEquatableProperties: Bool = defaultConfiguration.$retainEquatableProperties.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Retain properties on Equatable types, including Hashable types")
+    var retainEquatableProperties: Bool?
 
-    @Flag(help: "Retain properties on Hashable types")
-    var retainHashableProperties: Bool = defaultConfiguration.$retainHashableProperties.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Retain properties on Hashable types")
+    var retainHashableProperties: Bool?
 
-    @Flag(help: "Clean existing build artifacts before building")
-    var cleanBuild: Bool = defaultConfiguration.$cleanBuild.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Clean existing build artifacts before building")
+    var cleanBuild: Bool?
 
-    @Flag(help: "Skip the project build step")
-    var skipBuild: Bool = defaultConfiguration.$skipBuild.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Skip the project build step")
+    var skipBuild: Bool?
 
-    @Flag(help: "Output result paths relative to the current directory")
-    var relativeResults: Bool = defaultConfiguration.$relativeResults.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Output result paths relative to the current directory")
+    var relativeResults: Bool?
 
-    @Flag(help: "Exit with non-zero status if any unused code is found")
-    var strict: Bool = defaultConfiguration.$strict.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Exit with non-zero status if any unused code is found")
+    var strict: Bool?
 
-    @Flag(help: "Disable checking for updates")
-    var disableUpdateCheck: Bool = defaultConfiguration.$disableUpdateCheck.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Disable checking for updates")
+    var disableUpdateCheck: Bool?
 
-    @Flag(help: "Enable verbose logging")
-    var verbose: Bool = defaultConfiguration.$verbose.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Enable verbose logging")
+    var verbose: Bool?
 
-    @Flag(help: "Only output results")
-    var quiet: Bool = defaultConfiguration.$quiet.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Only output results")
+    var quiet: Bool?
 
-    @Option(help: "Colored output mode")
-    var color: ColorOption = defaultConfiguration.$color.defaultValue
+    @Option(help: "Colored output mode (default: \(defaultConfiguration.$color.defaultValue.rawValue))")
+    var color: ColorOption?
 
     @Flag(name: .customLong("no-color"), help: .hidden)
     var noColor: Bool = false
@@ -153,8 +153,8 @@ struct ScanCommand: ParsableCommand {
     @Option(help: "Project configuration for non-Apple build systems")
     var genericProjectConfig: FilePath?
 
-    @Flag(help: "Enable Bazel project mode")
-    var bazel: Bool = defaultConfiguration.$bazel.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Enable Bazel project mode")
+    var bazel: Bool?
 
     @Option(help: "Filter pattern applied to the Bazel top-level targets query")
     var bazelFilter: String?
@@ -165,8 +165,8 @@ struct ScanCommand: ParsableCommand {
     @Option(help: "Path to a global index store populated by Bazel. If provided, will be used instead of individual module stores.")
     var bazelIndexStore: FilePath?
 
-    @Flag(help: "Enable Bazel visibility checking")
-    var bazelCheckVisibility: Bool = defaultConfiguration.$bazelCheckVisibility.defaultValue
+    @Flag(inversion: .prefixedNo, help: "Enable Bazel visibility checking")
+    var bazelCheckVisibility: Bool?
 
     private static let defaultConfiguration = Configuration()
 
@@ -184,16 +184,16 @@ struct ScanCommand: ParsableCommand {
         configuration.guidedSetup = setup
         configuration.projectRoot = projectRoot
         configuration.apply(\.$project, project)
-        configuration.apply(\.$schemes, schemes)
-        configuration.apply(\.$indexExclude, indexExclude)
-        configuration.apply(\.$reportExclude, reportExclude)
-        configuration.apply(\.$reportInclude, reportInclude)
+        configuration.apply(\.$schemes, schemes.nonEmpty)
+        configuration.apply(\.$indexExclude, indexExclude.nonEmpty)
+        configuration.apply(\.$reportExclude, reportExclude.nonEmpty)
+        configuration.apply(\.$reportInclude, reportInclude.nonEmpty)
         configuration.apply(\.$outputFormat, format)
-        configuration.apply(\.$retainFiles, retainFiles)
+        configuration.apply(\.$retainFiles, retainFiles.nonEmpty)
         configuration.apply(\.$retainPublic, retainPublic)
-        configuration.apply(\.$noRetainSPI, noRetainSPI)
+        configuration.apply(\.$noRetainSPI, noRetainSPI.nonEmpty)
         configuration.apply(\.$retainAssignOnlyProperties, retainAssignOnlyProperties)
-        configuration.apply(\.$retainAssignOnlyPropertyTypes, retainAssignOnlyPropertyTypes)
+        configuration.apply(\.$retainAssignOnlyPropertyTypes, retainAssignOnlyPropertyTypes.nonEmpty)
         configuration.apply(\.$retainObjcAccessible, retainObjcAccessible)
         configuration.apply(\.$retainObjcAnnotated, retainObjcAnnotated)
         configuration.apply(\.$retainUnusedProtocolFuncParams, retainUnusedProtocolFuncParams)
@@ -201,21 +201,21 @@ struct ScanCommand: ParsableCommand {
         configuration.apply(\.$disableRedundantPublicAnalysis, disableRedundantPublicAnalysis)
         configuration.apply(\.$disableUnusedImportAnalysis, disableUnusedImportAnalysis)
         configuration.apply(\.$superfluousIgnoreComments, superfluousIgnoreComments)
-        configuration.apply(\.$retainUnusedImportedModules, retainUnusedImportedModules)
-        configuration.apply(\.$externalEncodableProtocols, externalEncodableProtocols)
-        configuration.apply(\.$externalCodableProtocols, externalCodableProtocols)
-        configuration.apply(\.$externalTestCaseClasses, externalTestCaseClasses)
+        configuration.apply(\.$retainUnusedImportedModules, retainUnusedImportedModules.nonEmpty)
+        configuration.apply(\.$externalEncodableProtocols, externalEncodableProtocols.nonEmpty)
+        configuration.apply(\.$externalCodableProtocols, externalCodableProtocols.nonEmpty)
+        configuration.apply(\.$externalTestCaseClasses, externalTestCaseClasses.nonEmpty)
         configuration.apply(\.$verbose, verbose)
         configuration.apply(\.$quiet, quiet)
         configuration.apply(\.$color, noColor ? .never : color)
         configuration.apply(\.$disableUpdateCheck, disableUpdateCheck)
         configuration.apply(\.$strict, strict)
-        configuration.apply(\.$indexStorePath, indexStorePath)
+        configuration.apply(\.$indexStorePath, indexStorePath.nonEmpty)
         configuration.apply(\.$skipBuild, skipBuild)
         configuration.apply(\.$excludeTests, excludeTests)
-        configuration.apply(\.$excludeTargets, excludeTargets)
+        configuration.apply(\.$excludeTargets, excludeTargets.nonEmpty)
         configuration.apply(\.$cleanBuild, cleanBuild)
-        configuration.apply(\.$buildArguments, buildArguments)
+        configuration.apply(\.$buildArguments, buildArguments.nonEmpty)
         configuration.apply(\.$relativeResults, relativeResults)
         configuration.apply(\.$retainCodableProperties, retainCodableProperties)
         configuration.apply(\.$retainEncodableProperties, retainEncodableProperties)
@@ -339,5 +339,12 @@ extension ColorOption: ExpressibleByArgument {}
 extension FilePath: ArgumentParser.ExpressibleByArgument {
     public init?(argument: String) {
         self.init(argument)
+    }
+}
+
+private extension Array {
+    /// The array, or nil if it is empty. Repeatable options without a value given on the command line are empty.
+    var nonEmpty: Self? {
+        isEmpty ? nil : self
     }
 }

@@ -14,6 +14,7 @@
 - Updated swift-syntax dependency to 604.0.0.
 - Added the `name` option to the `// periphery:override` comment command.
 - Added a troubleshooting documentation link to USR conflict errors.
+- Every boolean scan option now has a `--no-` form, to switch off for one run what the configuration file enables, e.g. `--no-strict`.
 
 ##### Bug Fixes
 
@@ -31,6 +32,7 @@
 - Fix setter access modifiers such as `private(set)` being read as the access level of the declaration, e.g. `internal(set) public var` was treated as internal.
 - Fix scheme names, paths, build arguments and Bazel queries being interpreted by a shell, which allowed a crafted project or configuration to run arbitrary commands.
 - Fix references in top-level code, such as the body of a `main.swift`, being attributed to the preceding declaration, which reported the declarations they use as unused when the preceding declaration was unused.
+- Fix command-line values equal to the default not overriding the configuration file, e.g. `--format xcode` had no effect with `format: json` in `.periphery.yml`.
 
 ## 3.9.0 (2026-10-08)
 

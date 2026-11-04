@@ -102,6 +102,8 @@ For projects that are mixed Objective-C & Swift, it's highly recommended you [re
 
 Once you've settled upon the appropriate options for your project, you may wish to persist them in a YAML configuration file. The simplest way to achieve this is to run Periphery with the `--verbose` option. Near the beginning of the output, you will see the `[configuration:begin]` section with your configuration formatted as YAML below. Copy & paste the configuration into `.periphery.yml` in the root of your project folder. You can now simply run `periphery scan` and the YAML configuration will be used.
 
+The command line takes precedence over the configuration file, which takes precedence over the defaults. An option given on the command line wins even when its value is the default (`--format xcode` over `format: json` in the file), and an option that is not given leaves the value of the file untouched. Every boolean option has a `--no-` form to switch off, for one run, what the file enables (`--no-strict`, `--no-retain-public`, `--no-quiet`...). A list given on the command line replaces the list of the file.
+
 ## Analysis
 
 The goal of Periphery is to report instances of unused _declarations_. A declaration is a `class`, `struct`, `protocol`, `function`, `property`, `constructor`, `enum`, `typealias`, `associatedtype`, etc. As you'd expect, Periphery can identify simple unreferenced declarations, e.g., a `class` that is no longer used anywhere in your codebase.
