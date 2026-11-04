@@ -34,29 +34,29 @@ public final class Xcodebuild {
 
     @discardableResult
     public func build(project: XcodeProjectlike, scheme: String, allSchemes: [String], additionalArguments: [String] = []) throws -> String {
-        let args = try [
-            "-\(project.type)", "\"\(project.path.lexicallyNormalized().string.withEscapedQuotes)\"",
-            "-scheme", "\"\(scheme.withEscapedQuotes)\"",
+        let xcodebuild = try [
+            "xcodebuild",
+            "-\(project.type)", project.path.lexicallyNormalized().string,
+            "-scheme", scheme,
             "-parallelizeTargets",
-            "-derivedDataPath", "'\(derivedDataPath(for: project, schemes: allSchemes).string)'",
+            "-derivedDataPath", derivedDataPath(for: project, schemes: allSchemes).string,
             "-quiet",
             "build-for-testing",
-        ]
-        let envs = [
-            "CODE_SIGNING_ALLOWED=\"NO\"",
-            "ENABLE_BITCODE=\"NO\"",
-            "DEBUG_INFORMATION_FORMAT=\"dwarf\"",
-            "COMPILER_INDEX_STORE_ENABLE=\"YES\"",
-            "INDEX_ENABLE_DATA_STORE=\"YES\"",
-        ]
+            "CODE_SIGNING_ALLOWED=NO",
+            "ENABLE_BITCODE=NO",
+            "DEBUG_INFORMATION_FORMAT=dwarf",
+            "COMPILER_INDEX_STORE_ENABLE=YES",
+            "INDEX_ENABLE_DATA_STORE=YES",
+        ] + additionalArguments
 
-        let quotedArguments = quote(arguments: additionalArguments)
-        let xcodebuild = ["xcodebuild"] + args + envs + quotedArguments
         return try shell.exec(xcodebuild)
     }
 
     public func removeDerivedData(for project: XcodeProjectlike, allSchemes: [String]) throws {
-        try shell.exec(["rm", "-rf", derivedDataPath(for: project, schemes: allSchemes).string])
+        let path = try derivedDataPath(for: project, schemes: allSchemes)
+        guard path.exists else { return }
+
+        try FileManager.default.removeItem(atPath: path.string)
     }
 
     public func indexStorePath(project: XcodeProjectlike, schemes: [String]) throws -> FilePath {
@@ -79,14 +79,13 @@ public final class Xcodebuild {
     }
 
     func schemes(type: String, path: String, additionalArguments: [String]) throws -> Set<String> {
-        let args = [
-            "-\(type)", "\"\(path.withEscapedQuotes)\"",
+        let xcodebuild = [
+            "xcodebuild",
+            "-\(type)", path,
             "-list",
             "-json",
-        ]
+        ] + additionalArguments
 
-        let quotedArguments = quote(arguments: additionalArguments)
-        let xcodebuild = ["xcodebuild"] + args + quotedArguments
         let lines = try shell.exec(xcodebuild).split(separator: "\n").map { String($0).trimmed }
 
         // xcodebuild may output unrelated warnings, we need to strip them out otherwise
@@ -132,40 +131,5 @@ public final class Xcodebuild {
         let schemesHash = Set(schemes).sorted().joined(separator: "\n").djb2Hex
 
         return try Constants.cachePath().appending("DerivedData-\(xcodeVersionHash)-\(projectHash)-\(schemesHash)")
-    }
-
-    func quote(arguments: [String]) -> [String] {
-        var quotedArguments = arguments
-
-        for (i, arg) in arguments.enumerated() {
-            if arg.hasPrefix("-"),
-               let value = arguments[safe: i + 1],
-               !value.hasPrefix("-"),
-               !isQuoted(value)
-            {
-                quotedArguments[i + 1] = "\"\(value)\""
-            }
-        }
-
-        return quotedArguments
-    }
-
-    /// Whether the value is already quoted, either entirely, or as a build setting with a quoted value, e.g.
-    /// `OTHER_SWIFT_FLAGS='$(inherited) -no-warnings-as-errors'`.
-    private func isQuoted(_ value: String) -> Bool {
-        let quotes: Set<Character> = ["\"", "\'"]
-
-        if let first = value.first, quotes.contains(first) {
-            return true
-        }
-
-        if let equalsIndex = value.firstIndex(of: "="),
-           let settingValueFirst = value[value.index(after: equalsIndex)...].first,
-           quotes.contains(settingValueFirst)
-        {
-            return true
-        }
-
-        return false
     }
 }

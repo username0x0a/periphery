@@ -19,17 +19,24 @@ public enum PeripheryError: Error, LocalizedError, CustomStringConvertible {
     case indexStoreNotFound(derivedDataPath: String)
     case changeCurrentDirectoryFailed(FilePath)
     case declarationConflicts([String])
+    case executableNotFound(name: String, searchPath: [String])
 
     public var errorDescription: String? {
         switch self {
         case let .shellCommandFailed(cmd, status, output):
-            let joinedCmd = cmd.joined(separator: " ")
+            let joinedCmd = cmd.shellQuoted
             return "Shell command '\(joinedCmd)' returned exit status '\(status)':\n\(output)"
         case let .shellOutputEncodingFailed(cmd, encoding):
-            let joinedCmd = cmd.joined(separator: " ")
+            let joinedCmd = cmd.shellQuoted
             return "Shell command '\(joinedCmd)' output encoding to \(encoding) failed."
         case let .usageError(message):
             return message
+        case let .executableNotFound(name, searchPath):
+            if name.isEmpty {
+                return "Cannot run an empty command."
+            }
+
+            return "Executable '\(name)' not found in PATH: \(searchPath.joined(separator: ":"))"
         case let .declarationConflicts(conflicts):
             let maxListed = 20
             var message = """

@@ -5,6 +5,7 @@
 - Removed the `--skip-schemes-validation` option and `skip_schemes_validation` configuration option. Scheme names are no longer validated, avoiding a slow call to `xcodebuild`, so any scheme can be given, including that of a Swift package.
 - Conflicting declarations now throw an error.
 - The minimum supported Swift version is now 6.2.
+- Commands are no longer run through a shell, so build arguments are passed to the build tool exactly as given. Shell quoting inside `build_arguments` values is no longer removed: give a setting with spaces as a single argument, e.g. `OTHER_SWIFT_FLAGS=$(inherited) -no-warnings-as-errors`.
 
 ##### Enhancements
 
@@ -28,6 +29,7 @@
 - Report `public` members inside non-public extensions of non-public types as redundantly public.
 - Retain code referenced from `#Preview`s of used SwiftUI views.
 - Fix setter access modifiers such as `private(set)` being read as the access level of the declaration, e.g. `internal(set) public var` was treated as internal.
+- Fix scheme names, paths, build arguments and Bazel queries being interpreted by a shell, which allowed a crafted project or configuration to run arbitrary commands.
 
 ## 3.9.0 (2026-10-08)
 
