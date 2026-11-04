@@ -17,6 +17,16 @@
 ##### Bug Fixes
 
 - Fix a crash on Linux with Swift 6.4 when the scan completes, caused by deallocating network sessions.
+- Fix the CSV output swapping the `Modifiers` and `Attributes` columns, and quote fields containing a comma, double quote or line break (RFC 4180).
+- Escape GitHub Actions workflow command messages and properties, so names or hints containing `%`, `:`, `,` or line breaks no longer truncate annotations.
+- Escape `|` and line breaks in GitHub Markdown output table cells.
+- The `github-actions`, `gitlab-codequality` and `codeclimate` formats always report paths relative to the project root.
+- Fix a data race on the error propagated by concurrent indexing jobs.
+- Fix a potential deadlock when a shell command writes a large amount of output to stderr.
+- Fix a stack overflow when marking long chains of references as used.
+- Fix false positive redundant public accessibility for protocols whose public extension witnesses a requirement of another public protocol, and for types used only in inline arrays or pack expansions.
+- Report `public` members inside non-public extensions of non-public types as redundantly public.
+- Retain code referenced from `#Preview`s of used SwiftUI views.
 
 ## 3.9.0 (2026-10-08)
 
