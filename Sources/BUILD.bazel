@@ -228,6 +228,7 @@ swift_binary(
         "Frontend/Commands/CheckUpdateCommand.swift",
         "Frontend/Commands/ClearCacheCommand.swift",
         "Frontend/Commands/ScanCommand.swift",
+        "Frontend/Commands/ScanPreflight.swift",
         "Frontend/Commands/VersionCommand.swift",
         "Frontend/CommonSetupGuide.swift",
         "Frontend/GuidedSetup.swift",
