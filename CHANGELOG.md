@@ -36,6 +36,13 @@
 - Fix verbose and progress messages being written to stdout with machine-readable output formats, which corrupted the JSON, CSV and other results; they now go to stderr, and stdout only carries the results.
 - Exit with status 130 on SIGINT (Ctrl-C) and 143 on SIGTERM, stopping the running build, instead of reporting success. SIGTERM previously left the build running.
 - Periphery no longer sends the project line count to `api.periphery.pro` after a scan, nor prints a promotional message.
+- Fix `isolated` parameters and parameters defaulting to `#isolation` being reported as unused.
+- Fix parameters of `@available(*, unavailable, ...)` functions being reported as unused when the attribute has a `message:` or `renamed:` argument.
+- Fix property-wrapped parameters used only through `$name` or `_name` being reported as unused, and the `init(wrappedValue:)` of wrappers applied to parameters being reported as unused.
+- Warn about `.periphery.yml` values of the wrong type, invalid enum values and misspelt keys (with the closest key), instead of silently keeping the default. A single string is accepted for list options, and a file that is not a mapping is an error.
+- Accept a generic project config with only `indexstores`, and report invalid generic project configs and package manifests with a readable reason instead of a raw decoding error.
+- Report a missing `swift` executable, an unrecognised Swift version, guided setup outside a project and Xcode projects on Linux as errors instead of crashing.
+- Check `--baseline`, `--write-baseline` and `--write-results` before the scan starts, with messages naming the option, and write the baseline atomically.
 
 ## 3.9.0 (2026-10-08)
 
