@@ -30,6 +30,7 @@
 - Retain code referenced from `#Preview`s of used SwiftUI views.
 - Fix setter access modifiers such as `private(set)` being read as the access level of the declaration, e.g. `internal(set) public var` was treated as internal.
 - Fix scheme names, paths, build arguments and Bazel queries being interpreted by a shell, which allowed a crafted project or configuration to run arbitrary commands.
+- Fix references in top-level code, such as the body of a `main.swift`, being attributed to the preceding declaration, which reported the declarations they use as unused when the preceding declaration was unused.
 
 ## 3.9.0 (2026-10-08)
 

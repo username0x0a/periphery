@@ -290,7 +290,12 @@ final class SwiftIndexer: Indexer {
             }
 
             associateLatentReferences()
-            associateDanglingReferences()
+            associateDanglingReferences(
+                excluding: TopLevelCodeCollector.collect(
+                    from: multiplexingSyntaxVisitor.syntax,
+                    locationConverter: multiplexingSyntaxVisitor.locationConverter
+                )
+            )
             visitDeclarations(using: declarationSyntaxVisitor)
             identifyUnusedParameters(using: multiplexingSyntaxVisitor)
             applyCommentCommands(using: multiplexingSyntaxVisitor)
@@ -342,7 +347,10 @@ final class SwiftIndexer: Indexer {
 
         // Swift does not associate some type references with the containing declaration, resulting in references
         // with no clear parent. Property references are one example: https://github.com/apple/swift/issues/56163
-        private func associateDanglingReferences() {
+        //
+        // References located in top-level code, such as the body of a main.swift, have no parent by nature and stay
+        // parentless, which makes them root references, as the code always runs.
+        private func associateDanglingReferences(excluding topLevelCode: TopLevelCodeRanges) {
             guard !danglingReferences.isEmpty else { return }
 
             // Sort declarations to ensure deterministic candidate selection when
@@ -360,6 +368,10 @@ final class SwiftIndexer: Indexer {
             let sortedDeclLines = declsByLine.keys.sorted().reversed()
 
             for ref in danglingReferences {
+                if topLevelCode.contains(line: ref.location.line, column: ref.location.column) {
+                    continue
+                }
+
                 let sameLineCandidateDecls = declsByLocation[ref.location] ??
                     declsByLine[ref.location.line]
                 var candidateDecls = [Declaration]()
