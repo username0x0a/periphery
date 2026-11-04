@@ -34,6 +34,7 @@
 - Fix references in top-level code, such as the body of a `main.swift`, being attributed to the preceding declaration, which reported the declarations they use as unused when the preceding declaration was unused.
 - Fix command-line values equal to the default not overriding the configuration file, e.g. `--format xcode` had no effect with `format: json` in `.periphery.yml`.
 - Fix verbose and progress messages being written to stdout with machine-readable output formats, which corrupted the JSON, CSV and other results; they now go to stderr, and stdout only carries the results.
+- Exit with status 130 on SIGINT (Ctrl-C) and 143 on SIGTERM, stopping the running build, instead of reporting success. SIGTERM previously left the build running.
 
 ## 3.9.0 (2026-10-08)
 
