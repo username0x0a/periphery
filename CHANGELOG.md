@@ -35,6 +35,7 @@
 - Fix command-line values equal to the default not overriding the configuration file, e.g. `--format xcode` had no effect with `format: json` in `.periphery.yml`.
 - Fix verbose and progress messages being written to stdout with machine-readable output formats, which corrupted the JSON, CSV and other results; they now go to stderr, and stdout only carries the results.
 - Exit with status 130 on SIGINT (Ctrl-C) and 143 on SIGTERM, stopping the running build, instead of reporting success. SIGTERM previously left the build running.
+- Periphery no longer sends the project line count to `api.periphery.pro` after a scan, nor prints a promotional message.
 
 ## 3.9.0 (2026-10-08)
 

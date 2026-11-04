@@ -34,7 +34,7 @@ final class SwiftIndexer: Indexer {
         super.init(configuration: configuration)
     }
 
-    func perform() throws -> Int {
+    func perform() throws {
         let jobs = sourceFiles.map { file, units -> Job in
             Job(
                 sourceFile: file,
@@ -74,8 +74,6 @@ final class SwiftIndexer: Indexer {
         }
 
         logger.endInterval(phaseTwoInterval)
-
-        return jobs.reduce(into: 0) { $0 += $1.scannedLOC }
     }
 
     // MARK: - Private
@@ -89,7 +87,6 @@ final class SwiftIndexer: Indexer {
 
     private final class Job {
         let sourceFile: SourceFile
-        private(set) var scannedLOC: Int = 0
 
         private let units: [IndexUnit]
         private let graph: SourceGraphMutex
@@ -272,11 +269,6 @@ final class SwiftIndexer: Indexer {
             let importSyntaxVisitor = multiplexingSyntaxVisitor.add(ImportSyntaxVisitor.self)
 
             multiplexingSyntaxVisitor.visit()
-
-            scannedLOC = SourceLOCCounter.countLines(
-                of: multiplexingSyntaxVisitor.syntax,
-                using: multiplexingSyntaxVisitor.locationConverter
-            )
 
             sourceFile.importStatements = importSyntaxVisitor.importStatements
             sourceFile.importsSwiftTesting = importSyntaxVisitor.importStatements.contains(where: { $0.module == "Testing" })
