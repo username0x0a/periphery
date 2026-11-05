@@ -2,6 +2,20 @@
 
 ##### Breaking
 
+- None.
+
+##### Enhancements
+
+- None.
+
+##### Bug Fixes
+
+- None.
+
+## 3.10.0 (2026-11-05)
+
+##### Breaking
+
 - Removed the `--skip-schemes-validation` option and `skip_schemes_validation` configuration option. Scheme names are no longer validated, avoiding a slow call to `xcodebuild`, so any scheme can be given, including that of a Swift package.
 - Conflicting declarations now throw an error.
 - The minimum supported Swift version is now 6.2.
